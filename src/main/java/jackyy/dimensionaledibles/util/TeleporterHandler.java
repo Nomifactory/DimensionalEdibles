@@ -137,100 +137,63 @@ public class TeleporterHandler {
 
     public static BlockPos getValidYSpawnPos(World world, BlockPos basePos) {
         MutableBlockPos pos = new MutableBlockPos(basePos.getX() / 8, basePos.getY(), basePos.getZ() / 8);
-        MutableBlockPos possiblePosition = new MutableBlockPos(0,0,0);
-        boolean foundSpawnPos = false;
-        boolean incrementedBlockFlag = false;
+        MutableBlockPos spawnPosition = new MutableBlockPos(-1, -1, -1);
+        int possibleYPosition = 0;
 
-        while(!foundSpawnPos) {
-
-            //start searching Y locations at 4 to avoid vanilla bedrock generation
-            for(int startingY = 4; startingY < world.getActualHeight(); startingY++) {
-                pos.setY(startingY);
-                boolean isBlockBelowSolid = world.getBlockState(pos.add(0,-1,0)).isSideSolid(world, pos.add(0,-1,0), EnumFacing.UP);
-                boolean isLegBlockSolid = world.getBlockState(pos).isNormalCube();
-                boolean isChestBlockSolid = world.getBlockState(pos.add(0, 1, 0)).isNormalCube();
-
-                //Check to see if the block below the player's feet is solid, and if the player has a two block spawning area
-                if(isBlockBelowSolid && !isLegBlockSolid && !isChestBlockSolid && !incrementedBlockFlag) {
-                    //The first instance of a possible spawning location found
-                    if(possiblePosition.getY() == 0) {
-                        possiblePosition = pos;
-                    }
-                    else {
-                        //If the current pos.getY() is closer to the basePos.getY than the current possible spawning location,
-                        //set that as the new possible spawning location
-                        if(Math.abs(possiblePosition.getY() - basePos.getY()) > Math.abs(pos.getY() - basePos.getY())) {
-                            possiblePosition = pos;
-                        }
-                    }
-                    //Update that we have found a possible spawning location
-                    foundSpawnPos = true;
-                }
-
-                if(incrementedBlockFlag) {
-                    possiblePosition = createSpawnPosition(world, basePos);
-                    if(possiblePosition.getZ() != 0 && possiblePosition.getX() != 0 && possiblePosition.getY() != 0) {
-                        foundSpawnPos = true;
-                    }
-                }
-
+        do {
+            //Scan the x,z coordinate point along the Y column to find a possible spawn location. Returns -1 if no location is found
+            possibleYPosition = scanColumn(world, pos.getX(), pos.getZ(), pos.getY());
+            if(possibleYPosition == -1) {
+                incrementColumn(pos, basePos);
             }
-
-            //If during the scan of the Y column, we have not found a suitable spawning location
-            if(!foundSpawnPos) {
-                //Increment the X or Z positions to search in a grid around the Y column.
-                //Increment 5 blocks in the +X direction
-                if(pos.getX() <= ((basePos.getX() / 8) + 5)) {
-                    pos.setPos((basePos.getX() / 8) + 1, basePos.getY(), basePos.getZ() / 8);
-                }
-                //Increment 5 blocks in the +Z direction after incrementing the X
-                else if(pos.getZ() <= ((basePos.getZ() / 8) + 5)) {
-                    pos.setPos(basePos.getX() / 8, basePos.getY(), (basePos.getZ() / 8) + 1);
-                }
-                //Forcibly make a spawn point
-                else {
-                    incrementedBlockFlag = true;
-                    //reset the X and Z positions to check in the original Y column, and to fallback on incrementing the
-                    //X and Z positions again when trying to force the spawn.
-                    pos.setPos(basePos.getX() / 8, basePos.getY(), basePos.getZ() / 8);
-                }
-
+            else {
+                spawnPosition.setPos(pos.getX(), possibleYPosition, pos.getZ());
             }
-
-
         }
+        while(spawnPosition.getY() != -1);
 
-        return possiblePosition;
+        return spawnPosition;
     }
 
-    public static MutableBlockPos createSpawnPosition(World world, BlockPos basePos) {
-        MutableBlockPos pos = new MutableBlockPos(basePos.getX() / 8, basePos.getY(), basePos.getZ() / 8);
-        boolean isBlockBelowSolid = world.getBlockState(pos.add(0,-1,0)).isSideSolid(world, pos.add(0,-1,0), EnumFacing.UP);
+    public static int scanColumn(World world, int x, int z, int targetY) {
+        int possibleY = -1;
+        //start searching Y locations at 4 to avoid vanilla bedrock generation
+        for(int currentY = 4; currentY < world.getActualHeight(); currentY++) {
+            BlockPos pos = new BlockPos(x, currentY, z);
+            boolean isBlockBelowSolid = world.getBlockState(pos.down()).isSideSolid(world, pos.down(), EnumFacing.UP);
+            boolean isLegBlockSolid = world.getBlockState(pos).isNormalCube();
+            boolean isChestBlockSolid = world.getBlockState(pos.up()).isNormalCube();
 
-
-        //Check if the spawn creation can be forced at the original location
-        if(isBlockBelowSolid) {
-            //Force a clear space for the player
-            world.setBlockToAir(pos);
-            world.setBlockToAir(pos.add(0,1,0));
-
-            //Create a spawning Cage to prevent contact with lava or other dangerous liquids
-            for(int posY = pos.getY() - 1; posY <= posY + 2; posY++) {
-                for(int posX = pos.getX() - 1; posX <= posX + 1; posX++) {
-                    for(int posZ = pos.getZ() - 1; posZ <= posZ + 1; posZ++) {
-                        if(world.getBlockState(pos.setPos(posX, posY, posZ)).getBlock() instanceof BlockLiquid) {
-                            world.setBlockState(pos.setPos(posX, posY, posZ), Blocks.STONE.getDefaultState());
-                        }
+            //Check to see if the block below the player's feet is solid, and if the player has a two block spawning area
+            if(isBlockBelowSolid && !isLegBlockSolid && !isChestBlockSolid) {
+                //The first instance of a possible spawning location found
+                if(possibleY == -1) {
+                    possibleY = currentY;
+                }
+                else {
+                    //If the currentY is closer to the targetY than the current possibleY,
+                    //set that as the new possible spawning location
+                    if(Math.abs(possibleY - targetY) > Math.abs(pos.getY() - targetY)) {
+                        possibleY = currentY;
                     }
                 }
             }
 
-            return pos;
-
         }
+        return possibleY;
+    }
 
-        return new MutableBlockPos(0,0,0);
+    public static void incrementColumn(MutableBlockPos currentPos, BlockPos originalPos) {
 
+        double tempPosIncrementX = originalPos.getDistance(currentPos.getX() + 1, currentPos.getY(), currentPos.getZ());
+        double tempPosIncrementZ = originalPos.getDistance(currentPos.getX(), currentPos.getY(), currentPos.getZ() + 1);
+
+        if(tempPosIncrementX > tempPosIncrementZ) {
+            currentPos.setPos(currentPos.getX(), currentPos.getY(), currentPos.getZ() + 1);
+        }
+        else {
+            currentPos.setPos(currentPos.getX() + 1, currentPos.getY(), currentPos.getZ());
+        }
     }
 
 }
