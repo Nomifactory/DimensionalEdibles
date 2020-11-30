@@ -1,7 +1,6 @@
 package jackyy.dimensionaledibles.util;
 
 import jackyy.dimensionaledibles.DimensionalEdibles;
-import net.minecraft.block.BlockLiquid;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
