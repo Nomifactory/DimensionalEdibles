@@ -1,5 +1,5 @@
 # DimensionalEdibles: Omnifactory Edition
-[![Downloads](http://cf.way2muchnoise.eu/full_dimensional-edibles-omnifactory-edition_downloads.svg)](https://minecraft.curseforge.com/projects/dimensional-edibles-omnifactory-edition) [![MCVersion](http://cf.way2muchnoise.eu/versions/dimensional-edibles-omnifactory-edition.svg)](https://minecraft.curseforge.com/projects/dimensional-edibles-omnifactory-edition)
+[![Downloads](http://cf.way2muchnoise.eu/full_dimensional-edibles-omnifactory-edition_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/dimensional-edibles-omnifactory-edition) [![MCVersion](http://cf.way2muchnoise.eu/versions/dimensional-edibles-omnifactory-edition.svg)](https://www.curseforge.com/minecraft/mc-mods/dimensional-edibles-omnifactory-edition)
 
 [![GitHub issues](https://img.shields.io/github/issues/OmnifactoryDevs/DimensionalEdibles.svg)](https://github.com/OmnifactoryDevs/DimensionalEdibles/issues) [![GitHub pull requests](https://img.shields.io/github/issues-pr/OmnifactoryDevs/DimensionalEdibles.svg)](https://github.com/OmnifactoryDevs/DimensionalEdibles/pulls) [![license](https://img.shields.io/github/license/OmnifactoryDevs/DimensionalEdibles.svg)](../dev-1.12.2/LICENSE)
 
