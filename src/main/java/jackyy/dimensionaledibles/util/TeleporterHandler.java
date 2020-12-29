@@ -149,7 +149,7 @@ public class TeleporterHandler {
                 spawnPosition.setPos(pos.getX(), possibleYPosition, pos.getZ());
             }
         }
-        while(spawnPosition.getY() != -1);
+        while(spawnPosition.getY() == -1);
 
         return spawnPosition;
     }
