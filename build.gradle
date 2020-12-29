@@ -131,7 +131,7 @@ def getRewrittenVersion () {
     def lastTag = getLastTag()
 
     if (System.env['TRAVIS_TAG']) {
-        return System.env['TRAVIS_TAG']
+        return System.env['TRAVIS_TAG'] + ".0"
     } else {
         def commitNo = run "git rev-list ${lastTag}..HEAD --count"
 
