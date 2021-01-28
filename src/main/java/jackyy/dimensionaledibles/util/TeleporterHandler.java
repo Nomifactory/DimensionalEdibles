@@ -160,11 +160,11 @@ public class TeleporterHandler {
         for(int currentY = 4; currentY < world.getActualHeight(); currentY++) {
             BlockPos pos = new BlockPos(x, currentY, z);
             boolean isBlockBelowSolid = world.getBlockState(pos.down()).isSideSolid(world, pos.down(), EnumFacing.UP);
-            boolean isLegBlockSolid = world.getBlockState(pos).isNormalCube();
-            boolean isChestBlockSolid = world.getBlockState(pos.up()).isNormalCube();
+            boolean isLegBlockFree = world.getBlockState(pos).getBlock().isAir(world.getBlockState(pos), world, pos);
+            boolean isChestBlockFree = world.getBlockState(pos.up()).getBlock().isAir(world.getBlockState(pos.up()), world, pos);
 
             //Check to see if the block below the player's feet is solid, and if the player has a two block spawning area
-            if(isBlockBelowSolid && !isLegBlockSolid && !isChestBlockSolid) {
+            if(isBlockBelowSolid && isChestBlockFree && isLegBlockFree) {
                 //The first instance of a possible spawning location found
                 if(possibleY == -1) {
                     possibleY = currentY;
