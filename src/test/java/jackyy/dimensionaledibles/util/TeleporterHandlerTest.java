@@ -44,7 +44,10 @@ public class TeleporterHandlerTest
             if(pos.getY() <= 4)
                 return bedrock;
             if(pos.getY() < 128)
-                return netherrack;
+                if(pos.getX() > 3)
+                    return air;
+                else
+                    return netherrack;
             if(pos.getY() > 128)
                 return air;
             else // y = 128
