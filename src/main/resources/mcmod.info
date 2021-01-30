@@ -1,13 +1,13 @@
 [
 {
   "modid": "dimensionaledibles",
-  "name": "Dimensional Edibles",
+  "name": "Dimensional Edibles: Omnifactory Edition",
   "description": "Travel through dimensions with food!",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "https://github.com/JackyyTV/DimensionalEdibles",
+  "url": "https://github.com/OmnifactoryDevs/DimensionalEdibles",
   "updateUrl": "",
-  "authorList": ["Jackyy", "Turkey2349"],
+  "authorList": ["Jackyy", "Turkey2349", "ALongStringOfNumbers", "Eutropium", "Exa4096", "notmywing"],
   "credits": "",
   "logoFile": "assets/dimensionaledibles/logo.png",
   "screenshots": [],
