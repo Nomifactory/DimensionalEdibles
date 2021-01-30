@@ -22,13 +22,13 @@ public class ModConfig {
         public boolean overworldCake = true;
         @Config.Comment("Set to true to enable custom Cakes.")
         public boolean customCake = true;
-        @Config.Comment("Set to true to enable Ender Cake.")
+        @Config.Comment("Set to true to enable Ender Apple.")
         public boolean enderApple = true;
-        @Config.Comment("Set to true to enable Nether Cake.")
+        @Config.Comment("Set to true to enable Nether Apple.")
         public boolean netherApple = true;
-        @Config.Comment("Set to true to enable Overworld Cake.")
+        @Config.Comment("Set to true to enable Overworld Apple.")
         public boolean overworldApple = true;
-        @Config.Comment("Set to true to enable Custom Cake.")
+        @Config.Comment("Set to true to enable Custom Apple.")
         public boolean customApple = true;
     }
 
