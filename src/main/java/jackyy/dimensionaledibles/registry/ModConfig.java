@@ -30,6 +30,10 @@ public class ModConfig {
         public boolean overworldApple = true;
         @Config.Comment("Set to true to enable Custom Cake.")
         public boolean customApple = true;
+
+        @Config.Comment("Required operator level to invalidate stored cake spawning position")
+        @Config.RangeInt(min = 1, max = 4)
+        public int operatorInvalidationLevel = 1;
     }
 
     public static class Tweaks {

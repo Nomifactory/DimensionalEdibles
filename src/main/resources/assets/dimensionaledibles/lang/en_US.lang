@@ -26,6 +26,6 @@ dimensionaledibles.error.end_portal_disabled=§cActivation of the End Portal has
 
 #Commands
 dimensionaledibles.command.usage=Usage: /dimensionalEdibles <invalidate>
-dimensionaledibles.command.invalidate.usage=Usage: /dimensionalEdibles invalidate dimID
-dimensionaledibles.command.invalidate.failed=Usage: /dimensionalEdibles invalidate <dimID>
+dimensionaledibles.command.invalidate.usage=Usage: /dimensionalEdibles invalidate <player> <dimID>
+dimensionaledibles.command.invalidate.failed=Incorrect or unspecified parameters
 dimensionaledibles.command.invalidate.success=Successfully removed stored spawn location

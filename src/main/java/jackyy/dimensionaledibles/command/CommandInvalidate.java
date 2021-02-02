@@ -9,7 +9,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.server.command.CommandTreeBase;
+import jackyy.dimensionaledibles.registry.ModConfig;
 
 import static jackyy.dimensionaledibles.util.TeleporterHandler.getModNBTData;
 
@@ -27,17 +27,18 @@ public class CommandInvalidate extends CommandBase {
 
     @Override
     public int getRequiredPermissionLevel() {
-        return 1;
+        return ModConfig.general.operatorInvalidationLevel;
     }
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 
         try {
-            EntityPlayerMP player = getCommandSenderAsPlayer(sender);
+            String playerName = args[0];
+            EntityPlayerMP player = getPlayer(server, sender, playerName);
             NBTTagCompound dimensionCache = getModNBTData(player);
-            if(dimensionCache.hasKey(args[0])) {
-                dimensionCache.removeTag(args[0]);
+            if(dimensionCache.hasKey(args[1])) {
+                dimensionCache.removeTag(args[1]);
                 sender.sendMessage(new TextComponentTranslation("dimensionaledibles.command.invalidate.success").setStyle(new Style().setColor(TextFormatting.GREEN)));
             }
         }
