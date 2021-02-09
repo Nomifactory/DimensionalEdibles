@@ -49,7 +49,7 @@ public class CommandInvalidate extends CommandBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 
-        if(args.length == 0) {
+        if(!(args.length == 2)) {
             throw new WrongUsageException("dimensionaledibles.command.invalidate.usage");
         }
 
