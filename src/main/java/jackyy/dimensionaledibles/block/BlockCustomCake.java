@@ -77,7 +77,8 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
                 DimensionalEdibles.logger.log(Level.ERROR, s + " is not a valid line input! The dimension ID needs to be a number!");
             }
         }
-        if (!stack.isEmpty() && stack.getItem() == Item.REGISTRY.getObject(new ResourceLocation(fuel))) {
+        int fuelUntilFull = getMetaFromState(state);
+        if (!stack.isEmpty() && stack.getItem() == Item.REGISTRY.getObject(new ResourceLocation(fuel)) && fuelUntilFull != 0) {
             if (meta >= 0) {
                 world.setBlockState(pos, state.withProperty(BITES, meta), 2);
                 if (!player.capabilities.isCreativeMode) {
