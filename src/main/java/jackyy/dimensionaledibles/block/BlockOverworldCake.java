@@ -21,10 +21,10 @@ public class BlockOverworldCake extends BlockCakeBase implements ITileEntityProv
 
     @Override
     protected BlockPos calculateCoordinates(EntityPlayerMP player) {
-        WorldServer overworld = player.server.getPlayerList().getServerInstance().getWorld(cakeDimension());
-        if (ModConfig.tweaks.overworldCake.useWorldSpawn)
+        if (ModConfig.tweaks.overworldCake.useWorldSpawn) {
+            WorldServer overworld = player.server.getPlayerList().getServerInstance().getWorld(cakeDimension());
             return overworld.getTopSolidOrLiquidBlock(overworld.getSpawnPoint());
-        else
+        } else
             return getDimPos(player, cakeDimension(), player.getPosition());
     }
 
