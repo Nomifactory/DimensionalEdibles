@@ -27,6 +27,10 @@ import java.util.Random;
 
 public class TeleporterHandler {
 
+    public static void teleport(EntityPlayerMP player, int dim, BlockPos coords, PlayerList playerList) {
+        teleport(player, dim, coords.getX(), coords.getY(), coords.getZ(), playerList);
+    }
+
     public static void teleport(EntityPlayerMP player, int dim, double x, double y, double z, PlayerList playerList) {
         if (!ForgeHooks.onTravelToDimension(player, dim))
             return;
