@@ -1,35 +1,32 @@
 package jackyy.dimensionaledibles.block;
 
-import jackyy.dimensionaledibles.DimensionalEdibles;
-import jackyy.dimensionaledibles.block.tile.TileDimensionCake;
-import jackyy.dimensionaledibles.registry.ModConfig;
-import jackyy.dimensionaledibles.util.TeleporterHandler;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
+import jackyy.dimensionaledibles.*;
+import jackyy.dimensionaledibles.block.tile.*;
+import jackyy.dimensionaledibles.registry.*;
+import net.minecraft.block.*;
+import net.minecraft.block.state.*;
+import net.minecraft.creativetab.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.item.*;
+import net.minecraft.nbt.*;
+import net.minecraft.tileentity.*;
+import net.minecraft.util.*;
+import net.minecraft.util.math.*;
+import net.minecraft.world.*;
+import net.minecraftforge.common.*;
+import net.minecraftforge.fml.relauncher.*;
+import org.apache.logging.log4j.*;
+
+import static jackyy.dimensionaledibles.DimensionalEdibles.*;
 
 public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvider {
 
     private int customX = 0;
     private int customY = 0;
     private int customZ = 0;
+
+    private String cakeFuel;
+    private int cakeDimension = 0;
 
     public BlockCustomCake() {
         super();
@@ -38,107 +35,84 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        int meta = getMetaFromState(world.getBlockState(pos)) - 1;
-        ItemStack stack = player.getHeldItem(hand);
-        int dimension = 0;
+    public boolean onBlockActivated(World world,
+                                    BlockPos pos,
+                                    IBlockState state,
+                                    EntityPlayer player,
+                                    EnumHand hand,
+                                    EnumFacing side,
+                                    float hitX,
+                                    float hitY,
+                                    float hitZ) {
+        this.cakeDimension = getDimension(world, pos);
+        this.cakeFuel = determineCakeFuel();
+        updateCustomCoordinates();
+
+        return super.onBlockActivated(world, pos, state, player, hand, side, hitX, hitY, hitZ);
+    }
+
+    private int getDimension(World world,
+                             BlockPos pos) {
         TileEntity ent = world.getTileEntity(pos);
-        if (ent != null && ent instanceof TileDimensionCake) {
-            dimension = ((TileDimensionCake) ent).getDimensionID();
-        }
-        String fuel = "minecraft:air";
-        for (String s : ModConfig.tweaks.customEdible.customCake.fuel) {
-            try {
-                String[] parts = s.split(",");
-                if (parts.length < 2) {
-                    DimensionalEdibles.logger.log(Level.ERROR, s + " is not a valid input line! Format needs to be: <dimID>, <cakeFuel>");
-                    continue;
-                }
-                if (Integer.parseInt(parts[0].trim()) == dimension) {
-                    fuel = parts[1].trim();
-                }
-            } catch (NumberFormatException e) {
-                DimensionalEdibles.logger.log(Level.ERROR, s + " is not a valid line input! The dimension ID needs to be a number!");
-            }
-        }
-        for (String s : ModConfig.tweaks.customEdible.customCoords) {
+        if (ent instanceof TileDimensionCake)
+            return ((TileDimensionCake) ent).getDimensionID();
+        throw new IllegalArgumentException("Specified position does not contain a Custom Cake");
+    }
+
+    private void updateCustomCoordinates() {
+        for(String s : ModConfig.tweaks.customEdible.customCoords) {
             try {
                 String[] parts = s.split(",");
                 if (parts.length < 4) {
-                    DimensionalEdibles.logger.log(Level.ERROR, s + " is not a valid input line! Format needs to be: <dimID>, <x>, <y>, <z>");
+                    logger.log(Level.ERROR,
+                               s + " is not a valid input line! Format needs to be: <dimID>, <x>, <y>, <z>");
                     continue;
                 }
-                if (Integer.parseInt(parts[0].trim()) == dimension) {
+                if (Integer.parseInt(parts[0].trim()) == cakeDimension) {
                     customX = Integer.parseInt(parts[1].trim());
                     customY = Integer.parseInt(parts[2].trim());
                     customZ = Integer.parseInt(parts[3].trim());
                 }
-            } catch (NumberFormatException e) {
-                DimensionalEdibles.logger.log(Level.ERROR, s + " is not a valid line input! The dimension ID needs to be a number!");
+            } catch(NumberFormatException e) {
+                logger.log(Level.ERROR,
+                           s + " is not a valid line input! The dimension ID needs to be a number!");
             }
         }
-        int fuelUntilFull = getMetaFromState(state);
-        if (!stack.isEmpty() && stack.getItem() == Item.REGISTRY.getObject(new ResourceLocation(fuel)) && fuelUntilFull != 0) {
-            if (meta >= 0) {
-                world.setBlockState(pos, state.withProperty(BITES, meta), 2);
-                if (!player.capabilities.isCreativeMode) {
-                    stack.shrink(1);
+    }
+
+    private String determineCakeFuel() {
+        String fuel = "minecraft:air";
+        for(String s : ModConfig.tweaks.customEdible.customCake.fuel) {
+            try {
+                String[] parts = s.split(",");
+                if (parts.length < 2) {
+                    logger.log(Level.ERROR,
+                               s + " is not a valid input line! Format needs to be: <dimID>, <cakeFuel>");
+                    continue;
                 }
-                return true;
-            }
-        } else {
-            if (world.provider.getDimension() != dimension) {
-                if (!world.isRemote) {
-                    if (player.capabilities.isCreativeMode || !ModConfig.tweaks.customEdible.customCake.consumeFuel) {
-                        teleportPlayer(world, player, dimension);
-                    } else {
-                        consumeCake(world, pos, player, dimension);
-                    }
-                    return true;
+                if (Integer.parseInt(parts[0].trim()) == cakeDimension) {
+                    fuel = parts[1].trim();
                 }
+            } catch(NumberFormatException e) {
+                logger.log(Level.ERROR,
+                           s + " is not a valid line input! The dimension ID needs to be a number!");
             }
         }
-        return false;
-    }
-
-    private void teleportPlayer(World world, EntityPlayer player, int dimension) {
-        EntityPlayerMP playerMP = (EntityPlayerMP) player;
-        BlockPos coords;
-        if (customX != 0 && customY != 0 && customZ != 0) {
-            coords = new BlockPos(customX, customY, customZ);
-        } else {
-            coords = TeleporterHandler.getDimPos(playerMP, dimension, player.getPosition());
-        }
-        TeleporterHandler.updateDimPos(playerMP, world.provider.getDimension(), player.getPosition());
-        TeleporterHandler.teleport(playerMP, dimension, coords.getX(), coords.getY(), coords.getZ(), playerMP.server.getPlayerList());
-    }
-
-    private void consumeCake(World world, BlockPos pos, EntityPlayer player, int dimension) {
-        if (player.canEat(true)) {
-            int l = world.getBlockState(pos).getValue(BITES);
-            if (l < 6) {
-                player.getFoodStats().addStats(2, 0.1F);
-                world.setBlockState(pos, world.getBlockState(pos).withProperty(BITES, l + 1), 3);
-                teleportPlayer(world, player, dimension);
-            }
-        }
-    }
-
-    @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-        return ModConfig.tweaks.customEdible.customCake.preFueled ? getDefaultState().withProperty(BITES, 0) : getDefaultState().withProperty(BITES, 6);
+        return fuel;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
-        if (ModConfig.general.customCake) {
+    public void getSubBlocks(CreativeTabs tab,
+                             NonNullList<ItemStack> list) {
+        if (registerItem()) {
             ItemStack stack;
-            for (String s : ModConfig.tweaks.customEdible.dimensions) {
+            for(String s : ModConfig.tweaks.customEdible.dimensions) {
                 try {
                     String[] parts = s.split(",");
                     if (parts.length < 2) {
-                        DimensionalEdibles.logger.log(Level.ERROR, s + " is not a valid input line! Format needs to be: <dimID>, <cakeName>");
+                        logger.log(Level.ERROR,
+                                   s + " is not a valid input line! Format needs to be: <dimID>, <cakeName>");
                         continue;
                     }
                     int dimension = Integer.parseInt(parts[0].trim());
@@ -153,18 +127,54 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
                         nbt.setString("cakeName", parts[1].trim());
                         list.add(stack);
                     } else {
-                        DimensionalEdibles.logger.log(Level.ERROR, parts[0] + " is not a valid dimension ID! (Needs to be a number)");
+                        logger.log(Level.ERROR,
+                                   parts[0] + " is not a valid dimension ID! (Needs to be a number)");
                     }
-                } catch (NumberFormatException e) {
-                    DimensionalEdibles.logger.log(Level.ERROR, s + " is not a valid line input! The dimension ID needs to be a number!");
+                } catch(NumberFormatException e) {
+                    logger.log(Level.ERROR,
+                               s + " is not a valid line input! The dimension ID needs to be a number!");
                 }
             }
         }
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
+    public TileEntity createNewTileEntity(World world,
+                                          int meta) {
         return new TileDimensionCake();
     }
 
+    @Override
+    protected String cakeFuel() {
+        return cakeFuel;
+    }
+
+    @Override boolean registerItem() {
+        return ModConfig.general.customCake;
+    }
+
+    @Override
+    protected int cakeDimension() {
+        return cakeDimension;
+    }
+
+    @Override
+    protected boolean useCustomCoordinates() {
+        return (customX != 0 && customY != 0 && customZ != 0);
+    }
+
+    @Override
+    protected BlockPos customCoordinates() {
+        return new BlockPos(customX, customY, customZ);
+    }
+
+    @Override
+    protected boolean consumesFuel() {
+        return ModConfig.tweaks.customEdible.customCake.consumeFuel;
+    }
+
+    @Override
+    protected boolean isPreFueled() {
+        return ModConfig.tweaks.customEdible.customCake.preFueled;
+    }
 }
