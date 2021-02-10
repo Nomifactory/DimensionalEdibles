@@ -250,7 +250,7 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                                             int meta,
                                             EntityLivingBase placer,
                                             EnumHand hand) {
-        return getDefaultState().withProperty(BITES, isPreFueled() ? 6 : 0);
+        return getDefaultState().withProperty(BITES, isPreFueled() ? 0 : 6);
     }
 
     /**
