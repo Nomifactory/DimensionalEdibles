@@ -32,7 +32,6 @@ public class CommandInvalidate extends CommandBase
     }
 
     @Override
-
     public String getUsage(ICommandSender sender) {
         return "dimensionaledibles.command.invalidate.usage";
     }
