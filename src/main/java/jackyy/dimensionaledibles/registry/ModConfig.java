@@ -56,7 +56,7 @@ public class ModConfig {
             public static class CustomCoords {
                 @Config.Comment("The X spawn coordinate")
                 public double x = 0.0D;
-                @Config.RangeDouble(min = 0.0D, max = 256.0D)
+                @Config.RangeDouble(min = 0.0D, max = 255.0D)
                 @Config.Comment("The Y spawn coordinate")
                 public double y = 64.0D;
                 @Config.Comment("The Z spawn coordinate")
@@ -74,7 +74,7 @@ public class ModConfig {
             public static class CustomCoords {
                 @Config.Comment("The X spawn coordinate")
                 public double x = 0.0D;
-                @Config.RangeDouble(min = 0.0D, max = 256.0D)
+                @Config.RangeDouble(min = 0.0D, max = 255.0D)
                 @Config.Comment("The Y spawn coordinate")
                 public double y = 64.0D;
                 @Config.Comment("The Z spawn coordinate")
@@ -98,7 +98,7 @@ public class ModConfig {
             public static class CustomCoords {
                 @Config.Comment("The X spawn coordinate")
                 public double x = 0.0D;
-                @Config.RangeDouble(min = 0.0D, max = 256.0D)
+                @Config.RangeDouble(min = 0.0D, max = 255.0D)
                 @Config.Comment("The Y spawn coordinate")
                 public double y = 64.0D;
                 @Config.Comment("The Z spawn coordinate")
@@ -116,7 +116,7 @@ public class ModConfig {
             public static class CustomCoords {
                 @Config.Comment("The X spawn coordinate")
                 public double x = 0.0D;
-                @Config.RangeDouble(min = 0.0D, max = 256.0D)
+                @Config.RangeDouble(min = 0.0D, max = 255.0D)
                 @Config.Comment("The Y spawn coordinate")
                 public double y = 64.0D;
                 @Config.Comment("The Z spawn coordinate")
@@ -145,7 +145,7 @@ public class ModConfig {
             public static class CustomCoords {
                 @Config.Comment("The X spawn coordinate")
                 public double x = 0.0D;
-                @Config.RangeDouble(min = 0.0D, max = 256.0D)
+                @Config.RangeDouble(min = 0.0D, max = 255.0D)
                 @Config.Comment("The Y spawn coordinate")
                 public double y = 64.0D;
                 @Config.Comment("The Z spawn coordinate")
@@ -168,7 +168,7 @@ public class ModConfig {
             public static class CustomCoords {
                 @Config.Comment("The X spawn coordinate")
                 public double x = 0.0D;
-                @Config.RangeDouble(min = 0.0D, max = 256.0D)
+                @Config.RangeDouble(min = 0.0D, max = 255.0D)
                 @Config.Comment("The Y spawn coordinate")
                 public double y = 64.0D;
                 @Config.Comment("The Z spawn coordinate")
