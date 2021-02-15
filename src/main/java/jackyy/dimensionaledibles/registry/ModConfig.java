@@ -134,7 +134,7 @@ public class ModConfig {
             @Config.Comment("Set to true to make the Overworld Cake consume fuel.")
             public boolean consumeFuel = true;
             @Config.Comment({
-                    "Set to true to make the Overworld Apple teleport players to world spawn.",
+                    "Set to true to make the Overworld Cake teleport players to world spawn.",
                     "Otherwise, it will use the cached position."
             })
             public boolean useWorldSpawn = true;
