@@ -29,7 +29,19 @@ import static jackyy.dimensionaledibles.util.TeleporterHandler.*;
  */
 public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, IWailaInfoProvider {
 
-    public static final PropertyInteger BITES = PropertyInteger.create("bites", 0, 6);
+    /** The number of bites remaining in a fully-fueled cake. */
+    public static final int MAX_BITES = 6;
+
+    /**
+     * "Bites" property for tracking damage to the cake.
+     * Zero bites is a fully-fueled cake. MAX_BITES is an empty cake.
+     */
+    public static final PropertyInteger BITES = PropertyInteger.create("bites", 0, MAX_BITES);
+
+    /**
+     * Bounding Box for cakes.
+     * Each entry in the array corresponds to a specific value of the BITES property.
+     */
     public static final AxisAlignedBB[] CAKE_AABB =
         new AxisAlignedBB[]{
             new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D),
@@ -222,7 +234,7 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
             probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
                      .item(new ItemStack(Items.CAKE))
                      .text(TextFormatting.GREEN + "Bites: ")
-                     .progress(6 - blockState.getValue(BITES), 6);
+                     .progress(MAX_BITES - blockState.getValue(BITES), MAX_BITES);
         }
     }
 
@@ -232,7 +244,8 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                                      IWailaDataAccessor accessor,
                                      IWailaConfigHandler config) {
         if (accessor.getBlockState().getBlock() instanceof BlockCakeBase) {
-            currentTip.add(TextFormatting.GRAY + "Bites: " + (6 - accessor.getBlockState().getValue(BITES)) + " / 6");
+            currentTip.add(TextFormatting.GRAY + "Bites: " +
+                           (MAX_BITES - accessor.getBlockState().getValue(BITES)) + " / " + MAX_BITES);
         }
         return currentTip;
     }
@@ -250,7 +263,7 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                                             int meta,
                                             EntityLivingBase placer,
                                             EnumHand hand) {
-        return getDefaultState().withProperty(BITES, isPreFueled() ? 0 : 6);
+        return getDefaultState().withProperty(BITES, isPreFueled() ? 0 : MAX_BITES);
     }
 
     /**
@@ -284,7 +297,7 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                                EntityPlayer player) {
         if (player.canEat(true)) {
             int l = world.getBlockState(pos).getValue(BITES);
-            if (l < 6) {
+            if (l < MAX_BITES) {
                 player.getFoodStats().addStats(2, 0.1F);
                 world.setBlockState(pos, world.getBlockState(pos).withProperty(BITES, l + 1), 3);
                 teleportPlayer(world, player);
