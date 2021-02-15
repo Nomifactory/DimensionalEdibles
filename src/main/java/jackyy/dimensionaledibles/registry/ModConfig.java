@@ -10,7 +10,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Config(modid = DimensionalEdibles.MODID, name = "DimensionalEdibles", category = DimensionalEdibles.MODID)
 public class ModConfig {
 
+    @Config.Comment("The Category for general features of the mod")
     public static General general = new General();
+    @Config.Comment("The category for tweaking behaviors of mod features")
     public static Tweaks tweaks = new Tweaks();
 
     public static class General {
@@ -38,6 +40,7 @@ public class ModConfig {
 
     public static class Tweaks {
 
+        @Config.Comment("The category for dealing with the End Cake")
         public EndCake endCake = new EndCake();
         public static class EndCake {
             @Config.Comment("Set the fuel used by End Cake (Don't change this unless you know what you're doing).")
@@ -48,26 +51,38 @@ public class ModConfig {
             public boolean consumeFuel = true;
             @Config.Comment("Set to true to use custom coordinates for the teleportation.")
             public boolean useCustomCoords = false;
+            @Config.Comment("Define the custom spawn coordinates")
             public CustomCoords customCoords = new CustomCoords();
             public static class CustomCoords {
+                @Config.Comment("The X spawn coordinate")
                 public double x = 0.0D;
+                @Config.RangeDouble(min = 0.0D, max = 255.0D)
+                @Config.Comment("The Y spawn coordinate")
                 public double y = 64.0D;
+                @Config.Comment("The Z spawn coordinate")
                 public double z = 0.0D;
             }
         }
 
+        @Config.Comment("The category for dealing with the End Apple")
         public EnderApple enderApple = new EnderApple();
         public static class EnderApple {
             @Config.Comment("Set to true to use custom coordinates for the teleportation.")
             public boolean useCustomCoords = false;
+            @Config.Comment("Define the custom spawn coordinates")
             public CustomCoords customCoords = new CustomCoords();
             public static class CustomCoords {
+                @Config.Comment("The X spawn coordinate")
                 public double x = 0.0D;
+                @Config.RangeDouble(min = 0.0D, max = 255.0D)
+                @Config.Comment("The Y spawn coordinate")
                 public double y = 64.0D;
+                @Config.Comment("The Z spawn coordinate")
                 public double z = 0.0D;
             }
         }
 
+        @Config.Comment("The category for dealing with the Nether Cake")
         public NetherCake netherCake = new NetherCake();
         public static class NetherCake {
             @Config.Comment("Set the fuel used by Nether Cake (Don't change this unless you know what you're doing).")
@@ -78,26 +93,38 @@ public class ModConfig {
             public boolean consumeFuel = true;
             @Config.Comment("Set to true to use custom coordinates for the teleportation.")
             public boolean useCustomCoords = false;
+            @Config.Comment("Define the custom spawn coordinates")
             public CustomCoords customCoords = new CustomCoords();
             public static class CustomCoords {
+                @Config.Comment("The X spawn coordinate")
                 public double x = 0.0D;
+                @Config.RangeDouble(min = 0.0D, max = 255.0D)
+                @Config.Comment("The Y spawn coordinate")
                 public double y = 64.0D;
+                @Config.Comment("The Z spawn coordinate")
                 public double z = 0.0D;
             }
         }
 
+        @Config.Comment("The category for dealing with the Nether Apple")
         public NetherApple netherApple = new NetherApple();
         public static class NetherApple {
             @Config.Comment("Set to true to use custom coordinates for the teleportation.")
             public boolean useCustomCoords = false;
+            @Config.Comment("Define the custom spawn coordinates")
             public CustomCoords customCoords = new CustomCoords();
             public static class CustomCoords {
+                @Config.Comment("The X spawn coordinate")
                 public double x = 0.0D;
+                @Config.RangeDouble(min = 0.0D, max = 255.0D)
+                @Config.Comment("The Y spawn coordinate")
                 public double y = 64.0D;
+                @Config.Comment("The Z spawn coordinate")
                 public double z = 0.0D;
             }
         }
 
+        @Config.Comment("The category dealing with the Overworld Cake")
         public OverworldCake overworldCake = new OverworldCake();
         public static class OverworldCake {
             @Config.Comment("Set the fuel used by Overworld Cake (Don't change this unless you know what you're doing).")
@@ -107,20 +134,26 @@ public class ModConfig {
             @Config.Comment("Set to true to make the Overworld Cake consume fuel.")
             public boolean consumeFuel = true;
             @Config.Comment({
-                    "Set to true to make the Overworld Apple teleport players to world spawn.",
+                    "Set to true to make the Overworld Cake teleport players to world spawn.",
                     "Otherwise, it will use the cached position."
             })
             public boolean useWorldSpawn = true;
             @Config.Comment("Set to true to use custom coordinates for the teleportation.")
             public boolean useCustomCoords = false;
+            @Config.Comment("Define the custom spawn coordinates")
             public CustomCoords customCoords = new CustomCoords();
             public static class CustomCoords {
+                @Config.Comment("The X spawn coordinate")
                 public double x = 0.0D;
+                @Config.RangeDouble(min = 0.0D, max = 255.0D)
+                @Config.Comment("The Y spawn coordinate")
                 public double y = 64.0D;
+                @Config.Comment("The Z spawn coordinate")
                 public double z = 0.0D;
             }
         }
 
+        @Config.Comment("The category for dealing with the Overworld Apple")
         public OverworldApple overworldApple = new OverworldApple();
         public static class OverworldApple {
             @Config.Comment({
@@ -130,14 +163,20 @@ public class ModConfig {
             public boolean useWorldSpawn = true;
             @Config.Comment("Set to true to use custom coordinates for the teleportation.")
             public boolean useCustomCoords = false;
+            @Config.Comment("Define the custom spawn coordinates")
             public CustomCoords customCoords = new CustomCoords();
             public static class CustomCoords {
+                @Config.Comment("The X spawn coordinate")
                 public double x = 0.0D;
+                @Config.RangeDouble(min = 0.0D, max = 255.0D)
+                @Config.Comment("The Y spawn coordinate")
                 public double y = 64.0D;
+                @Config.Comment("The Z spawn coordinate")
                 public double z = 0.0D;
             }
         }
 
+        @Config.Comment("The category for defining and modifying a Custom Cake")
         public CustomEdible customEdible = new CustomEdible();
         public static class CustomEdible {
             @Config.Comment({
@@ -153,6 +192,8 @@ public class ModConfig {
                     "Example: 0, 420, 123, -420"
             })
             public String[] customCoords = new String[0];
+
+            @Config.Comment("Customization of Custom Cake features")
             public CustomCake customCake = new CustomCake();
             public static class CustomCake {
                 @Config.Comment("Set to true to make all Custom Cakes pre-fueled upon placed.")
