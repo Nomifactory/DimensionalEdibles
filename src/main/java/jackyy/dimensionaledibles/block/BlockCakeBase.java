@@ -153,7 +153,10 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                     consumeCake(worldIn, pos, playerIn);
                 return true;
             }
-        return false;
+
+        // Return true also on the client to make sure that MC knows we
+        // handled this and will not try to place a block on the client
+        return true;
     }
 
     @Override
