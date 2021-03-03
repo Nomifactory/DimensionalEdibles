@@ -88,9 +88,11 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
     abstract protected int cakeDimension();
 
     /**
-     * Resource name of the fuel item for this cake.
+     * Item of the fuel item for this cake.
      */
-    abstract protected String cakeFuel();
+    // The efficiency of this method is best-case O(1), worst-case O(logN) due
+    // to the underlying implementation of the Item Registry using a HashMap
+    abstract protected ItemStack cakeFuel();
 
     /**
      * Whether this item should be registered.
@@ -137,7 +139,7 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
 
         ItemStack stack = playerIn.getHeldItem(hand);
         if (!stack.isEmpty() &&
-            stack.getItem() == Item.REGISTRY.getObject(new ResourceLocation(this.cakeFuel())) &&
+            ItemStack.areItemsEqual(stack, this.cakeFuel()) &&
             fuelUntilFull != 0) {
             if (meta >= 0) {
                 worldIn.setBlockState(pos, state.withProperty(BITES, meta), 2);

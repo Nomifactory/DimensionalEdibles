@@ -5,9 +5,14 @@ import jackyy.dimensionaledibles.block.tile.*;
 import jackyy.dimensionaledibles.registry.*;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.*;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.*;
 import net.minecraft.world.*;
+
+import java.util.Objects;
 
 import static jackyy.dimensionaledibles.util.TeleporterHandler.*;
 
@@ -35,8 +40,9 @@ public class BlockOverworldCake extends BlockCakeBase implements ITileEntityProv
     }
 
     @Override
-    protected String cakeFuel() {
-        return ModConfig.tweaks.overworldCake.fuel;
+    protected ItemStack cakeFuel() {
+        return new ItemStack(Objects.requireNonNull(
+                Item.REGISTRY.getObject(new ResourceLocation(ModConfig.tweaks.overworldCake.fuel))));
     }
 
     @Override

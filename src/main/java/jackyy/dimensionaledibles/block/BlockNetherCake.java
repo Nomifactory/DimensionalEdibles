@@ -4,9 +4,14 @@ import jackyy.dimensionaledibles.*;
 import jackyy.dimensionaledibles.block.tile.*;
 import jackyy.dimensionaledibles.registry.*;
 import net.minecraft.block.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.*;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.*;
 import net.minecraft.world.*;
+
+import java.util.Objects;
 
 public class BlockNetherCake extends BlockCakeBase implements ITileEntityProvider {
 
@@ -23,8 +28,9 @@ public class BlockNetherCake extends BlockCakeBase implements ITileEntityProvide
     }
 
     @Override
-    protected String cakeFuel() {
-        return ModConfig.tweaks.netherCake.fuel;
+    protected ItemStack cakeFuel() {
+        return new ItemStack(Objects.requireNonNull(
+                Item.REGISTRY.getObject(new ResourceLocation(ModConfig.tweaks.netherCake.fuel))));
     }
 
     @Override

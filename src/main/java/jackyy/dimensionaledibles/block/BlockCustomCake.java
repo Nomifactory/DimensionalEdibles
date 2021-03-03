@@ -17,6 +17,8 @@ import net.minecraftforge.common.*;
 import net.minecraftforge.fml.relauncher.*;
 import org.apache.logging.log4j.*;
 
+import java.util.Objects;
+
 import static jackyy.dimensionaledibles.DimensionalEdibles.*;
 
 public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvider {
@@ -25,7 +27,7 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
     private int customY = 0;
     private int customZ = 0;
 
-    private String cakeFuel;
+    private ItemStack cakeFuel;
     private int cakeDimension = 0;
 
     public BlockCustomCake() {
@@ -80,7 +82,7 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
         }
     }
 
-    private String determineCakeFuel() {
+    private ItemStack determineCakeFuel() {
         String fuel = "minecraft:air";
         for(String s : ModConfig.tweaks.customEdible.customCake.fuel) {
             try {
@@ -98,7 +100,9 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
                            s + " is not a valid line input! The dimension ID needs to be a number!");
             }
         }
-        return fuel;
+
+        return new ItemStack(Objects.requireNonNull(
+                Item.REGISTRY.getObject(new ResourceLocation(fuel))));
     }
 
     @Override
@@ -145,7 +149,7 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
     }
 
     @Override
-    protected String cakeFuel() {
+    protected ItemStack cakeFuel() {
         return cakeFuel;
     }
 
