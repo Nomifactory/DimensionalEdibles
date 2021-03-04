@@ -145,14 +145,17 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                     stack.shrink(1);
                 return true;
             }
-        } else if (worldIn.provider.getDimension() != this.cakeDimension())
-            if (!worldIn.isRemote) {
+        } else if (worldIn.provider.getDimension() != this.cakeDimension()) {
+            if (!worldIn.isRemote)
                 if (playerIn.capabilities.isCreativeMode || !this.consumesFuel())
                     teleportPlayer(worldIn, playerIn);
                 else
                     consumeCake(worldIn, pos, playerIn);
-                return true;
-            }
+
+            // client and server both need to report event was handled (Fixes #12)
+            return true;
+        }
+
         return false;
     }
 
