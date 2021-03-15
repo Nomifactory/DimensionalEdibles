@@ -17,6 +17,8 @@ import net.minecraftforge.common.*;
 import net.minecraftforge.fml.relauncher.*;
 import org.apache.logging.log4j.*;
 
+import javax.annotation.*;
+
 import static jackyy.dimensionaledibles.DimensionalEdibles.*;
 
 public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvider {
@@ -139,42 +141,30 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world,
+    public TileEntity createNewTileEntity(@Nonnull World world,
                                           int meta) {
         return new TileDimensionCake();
     }
 
-    @Override
-    protected String cakeFuel() {
-        return cakeFuel;
-    }
-
-    @Override boolean registerItem() {
-        return ModConfig.general.customCake;
-    }
-
-    @Override
-    protected int cakeDimension() {
-        return cakeDimension;
-    }
-
-    @Override
-    protected boolean useCustomCoordinates() {
-        return (customX != 0 && customY != 0 && customZ != 0);
-    }
+    private final ModConfig.CakeConfig conf = new ModConfig.CakeConfig() {
+        @Override
+        public String fuel() { return cakeFuel; }
+        @Override
+        public boolean useCustomCoordinates() { return (customX != 0 || customY != 0 || customZ != 0); }
+        @Override
+        public ModConfig.CustomCoords customCoords() { return new ModConfig.CustomCoords(customX, customY, customZ); }
+        @Override
+        public boolean consumesFuel() { return ModConfig.tweaks.customEdible.customCake.consumeFuel; }
+        @Override
+        public boolean preFueled() { return ModConfig.tweaks.customEdible.customCake.preFueled; }
+    };
 
     @Override
-    protected BlockPos customCoordinates() {
-        return new BlockPos(customX, customY, customZ);
-    }
+    protected ModConfig.CakeConfig config() { return conf; }
 
     @Override
-    protected boolean consumesFuel() {
-        return ModConfig.tweaks.customEdible.customCake.consumeFuel;
-    }
+    public boolean registerItem() { return ModConfig.general.customCake; }
 
     @Override
-    protected boolean isPreFueled() {
-        return ModConfig.tweaks.customEdible.customCake.preFueled;
-    }
+    public int cakeDimension() { return cakeDimension; }
 }

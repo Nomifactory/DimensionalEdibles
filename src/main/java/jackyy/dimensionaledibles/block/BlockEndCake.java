@@ -23,38 +23,13 @@ public class BlockEndCake extends BlockCakeBase implements ITileEntityProvider {
     }
 
     @Override
-    protected String cakeFuel() {
-        return ModConfig.tweaks.endCake.fuel;
+    public ModConfig.CakeConfig config() {
+        return ModConfig.tweaks.endCake;
     }
 
     @Override
-    protected boolean useCustomCoordinates() {
-        return ModConfig.tweaks.endCake.useCustomCoords;
-    }
+    protected int cakeDimension() { return 1; }
 
     @Override
-    protected BlockPos customCoordinates() {
-        return new BlockPos(ModConfig.tweaks.endCake.customCoords.x,
-                            ModConfig.tweaks.endCake.customCoords.y,
-                            ModConfig.tweaks.endCake.customCoords.z);
-    }
-
-    @Override
-    protected int cakeDimension() {
-        return 1;
-    }
-
-    @Override
-    protected boolean consumesFuel() {
-        return ModConfig.tweaks.endCake.consumeFuel;
-    }
-
-    @Override
-    protected boolean isPreFueled() {
-        return ModConfig.tweaks.endCake.preFueled;
-    }
-
-    @Override boolean registerItem() {
-        return ModConfig.general.endCake;
-    }
+    public boolean registerItem() { return ModConfig.general.endCake; }
 }

@@ -5,8 +5,9 @@ import jackyy.dimensionaledibles.block.tile.*;
 import jackyy.dimensionaledibles.registry.*;
 import net.minecraft.block.*;
 import net.minecraft.tileentity.*;
-import net.minecraft.util.math.*;
 import net.minecraft.world.*;
+
+import javax.annotation.*;
 
 public class BlockNetherCake extends BlockCakeBase implements ITileEntityProvider {
 
@@ -17,44 +18,17 @@ public class BlockNetherCake extends BlockCakeBase implements ITileEntityProvide
     }
 
     @Override
-    public TileEntity createNewTileEntity(World worldIn,
+    public TileEntity createNewTileEntity(@Nonnull World worldIn,
                                           int meta) {
         return new TileDimensionCake(cakeDimension(), "Nether");
     }
 
     @Override
-    protected String cakeFuel() {
-        return ModConfig.tweaks.netherCake.fuel;
-    }
+    protected ModConfig.CakeConfig config() { return ModConfig.tweaks.netherCake; }
 
     @Override
-    protected int cakeDimension() {
-        return -1;
-    }
+    protected int cakeDimension() { return -1; }
 
     @Override
-    protected boolean consumesFuel() {
-        return ModConfig.tweaks.netherCake.consumeFuel;
-    }
-
-    @Override
-    protected boolean useCustomCoordinates() {
-        return ModConfig.tweaks.netherCake.useCustomCoords;
-    }
-
-    @Override
-    protected BlockPos customCoordinates() {
-        return new BlockPos(ModConfig.tweaks.netherCake.customCoords.x,
-                            ModConfig.tweaks.netherCake.customCoords.y,
-                            ModConfig.tweaks.netherCake.customCoords.z);
-    }
-
-    @Override
-    protected boolean isPreFueled() {
-        return ModConfig.tweaks.netherCake.preFueled;
-    }
-
-    @Override boolean registerItem() {
-        return ModConfig.general.netherCake;
-    }
+    public boolean registerItem() { return ModConfig.general.netherCake; }
 }
