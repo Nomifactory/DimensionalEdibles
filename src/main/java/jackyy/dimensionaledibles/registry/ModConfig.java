@@ -1,6 +1,7 @@
 package jackyy.dimensionaledibles.registry;
 
 import jackyy.dimensionaledibles.DimensionalEdibles;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -14,6 +15,23 @@ public class ModConfig {
     public static General general = new General();
     @Config.Comment("The category for tweaking behaviors of mod features")
     public static Tweaks tweaks = new Tweaks();
+
+    public interface CakeConfig {
+        /** Resource name of the fuel item for this cake. */
+        String fuel();
+
+        /** Whether this cake comes pre-fueled (true) or starts empty (false) */
+        boolean preFueled();
+
+        /** Whether this cake should consume fuel. */
+        boolean consumesFuel();
+
+        /** Whether to use custom coordinates */
+        boolean useCustomCoordinates();
+
+        /** Custom Coordinates defined for this cake */
+        CustomCoords customCoords();
+    }
 
     public static class General {
         @Config.Comment("Set to true to enable End Cake.")
@@ -38,11 +56,49 @@ public class ModConfig {
         public int operatorInvalidationLevel = 1;
     }
 
+    public static class CustomCoords {
+
+        public CustomCoords() {}
+
+        public CustomCoords(double x, double y, double z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        @Config.Comment("The X spawn coordinate")
+        public double x = 0.0D;
+        @Config.RangeDouble(min = 0.0D, max = 255.0D)
+        @Config.Comment("The Y spawn coordinate")
+        public double y = 64.0D;
+        @Config.Comment("The Z spawn coordinate")
+        public double z = 0.0D;
+
+        public BlockPos toBlockPos() {
+            return new BlockPos(x, y, z);
+        }
+    }
+
     public static class Tweaks {
 
         @Config.Comment("The category for dealing with the End Cake")
         public EndCake endCake = new EndCake();
-        public static class EndCake {
+        @Config.Comment("The category for dealing with the End Apple")
+        public EnderApple enderApple = new EnderApple();
+        @Config.Comment("The category for dealing with the Nether Cake")
+        public NetherCake netherCake = new NetherCake();
+        @Config.Comment("The category for dealing with the Nether Apple")
+        public NetherApple netherApple = new NetherApple();
+        @Config.Comment("The category dealing with the Overworld Cake")
+        public OverworldCake overworldCake = new OverworldCake();
+        @Config.Comment("The category for dealing with the Overworld Apple")
+        public OverworldApple overworldApple = new OverworldApple();
+        @Config.Comment("The category for defining and modifying a Custom Cake")
+        public CustomEdible customEdible = new CustomEdible();
+        @Config.Comment("Set to true to disable the activation of vanilla End Portal.")
+        public boolean disableVanillaEndPortal = false;
+
+        public static class EndCake implements CakeConfig {
             @Config.Comment("Set the fuel used by End Cake (Don't change this unless you know what you're doing).")
             public String fuel = "minecraft:ender_eye";
             @Config.Comment("Set to true to make the End Cake pre-fueled upon placed.")
@@ -53,38 +109,23 @@ public class ModConfig {
             public boolean useCustomCoords = false;
             @Config.Comment("Define the custom spawn coordinates")
             public CustomCoords customCoords = new CustomCoords();
-            public static class CustomCoords {
-                @Config.Comment("The X spawn coordinate")
-                public double x = 0.0D;
-                @Config.RangeDouble(min = 0.0D, max = 255.0D)
-                @Config.Comment("The Y spawn coordinate")
-                public double y = 64.0D;
-                @Config.Comment("The Z spawn coordinate")
-                public double z = 0.0D;
-            }
+
+            // boilerplate
+            public String fuel() { return fuel; }
+            public boolean preFueled() { return preFueled; }
+            public boolean consumesFuel() { return consumeFuel; }
+            public boolean useCustomCoordinates() { return useCustomCoords; }
+            public CustomCoords customCoords() { return customCoords; }
         }
 
-        @Config.Comment("The category for dealing with the End Apple")
-        public EnderApple enderApple = new EnderApple();
         public static class EnderApple {
             @Config.Comment("Set to true to use custom coordinates for the teleportation.")
             public boolean useCustomCoords = false;
             @Config.Comment("Define the custom spawn coordinates")
             public CustomCoords customCoords = new CustomCoords();
-            public static class CustomCoords {
-                @Config.Comment("The X spawn coordinate")
-                public double x = 0.0D;
-                @Config.RangeDouble(min = 0.0D, max = 255.0D)
-                @Config.Comment("The Y spawn coordinate")
-                public double y = 64.0D;
-                @Config.Comment("The Z spawn coordinate")
-                public double z = 0.0D;
-            }
         }
 
-        @Config.Comment("The category for dealing with the Nether Cake")
-        public NetherCake netherCake = new NetherCake();
-        public static class NetherCake {
+        public static class NetherCake implements CakeConfig {
             @Config.Comment("Set the fuel used by Nether Cake (Don't change this unless you know what you're doing).")
             public String fuel = "minecraft:obsidian";
             @Config.Comment("Set to true to make the Nether Cake pre-fueled upon placed.")
@@ -95,38 +136,23 @@ public class ModConfig {
             public boolean useCustomCoords = false;
             @Config.Comment("Define the custom spawn coordinates")
             public CustomCoords customCoords = new CustomCoords();
-            public static class CustomCoords {
-                @Config.Comment("The X spawn coordinate")
-                public double x = 0.0D;
-                @Config.RangeDouble(min = 0.0D, max = 255.0D)
-                @Config.Comment("The Y spawn coordinate")
-                public double y = 64.0D;
-                @Config.Comment("The Z spawn coordinate")
-                public double z = 0.0D;
-            }
+
+            // boilerplate
+            public String fuel() { return fuel; }
+            public boolean preFueled() { return preFueled; }
+            public boolean consumesFuel() { return consumeFuel; }
+            public boolean useCustomCoordinates() { return useCustomCoords; }
+            public CustomCoords customCoords() { return customCoords; }
         }
 
-        @Config.Comment("The category for dealing with the Nether Apple")
-        public NetherApple netherApple = new NetherApple();
         public static class NetherApple {
             @Config.Comment("Set to true to use custom coordinates for the teleportation.")
             public boolean useCustomCoords = false;
             @Config.Comment("Define the custom spawn coordinates")
             public CustomCoords customCoords = new CustomCoords();
-            public static class CustomCoords {
-                @Config.Comment("The X spawn coordinate")
-                public double x = 0.0D;
-                @Config.RangeDouble(min = 0.0D, max = 255.0D)
-                @Config.Comment("The Y spawn coordinate")
-                public double y = 64.0D;
-                @Config.Comment("The Z spawn coordinate")
-                public double z = 0.0D;
-            }
         }
 
-        @Config.Comment("The category dealing with the Overworld Cake")
-        public OverworldCake overworldCake = new OverworldCake();
-        public static class OverworldCake {
+        public static class OverworldCake implements CakeConfig {
             @Config.Comment("Set the fuel used by Overworld Cake (Don't change this unless you know what you're doing).")
             public String fuel = "minecraft:sapling";
             @Config.Comment("Set to true to make the Overworld Cake pre-fueled upon placed.")
@@ -134,27 +160,23 @@ public class ModConfig {
             @Config.Comment("Set to true to make the Overworld Cake consume fuel.")
             public boolean consumeFuel = true;
             @Config.Comment({
-                    "Set to true to make the Overworld Cake teleport players to world spawn.",
-                    "Otherwise, it will use the cached position."
+                "Set to true to make the Overworld Cake teleport players to world spawn.",
+                "Otherwise, it will use the cached position."
             })
             public boolean useWorldSpawn = true;
             @Config.Comment("Set to true to use custom coordinates for the teleportation.")
             public boolean useCustomCoords = false;
             @Config.Comment("Define the custom spawn coordinates")
             public CustomCoords customCoords = new CustomCoords();
-            public static class CustomCoords {
-                @Config.Comment("The X spawn coordinate")
-                public double x = 0.0D;
-                @Config.RangeDouble(min = 0.0D, max = 255.0D)
-                @Config.Comment("The Y spawn coordinate")
-                public double y = 64.0D;
-                @Config.Comment("The Z spawn coordinate")
-                public double z = 0.0D;
-            }
+
+            // boilerplate
+            public String fuel() { return fuel; }
+            public boolean preFueled() { return preFueled; }
+            public boolean consumesFuel() { return consumeFuel; }
+            public boolean useCustomCoordinates() { return useCustomCoords; }
+            public CustomCoords customCoords() { return customCoords; }
         }
 
-        @Config.Comment("The category for dealing with the Overworld Apple")
-        public OverworldApple overworldApple = new OverworldApple();
         public static class OverworldApple {
             @Config.Comment({
                     "Set to true to make the Overworld Apple teleport players to world spawn.",
@@ -165,19 +187,8 @@ public class ModConfig {
             public boolean useCustomCoords = false;
             @Config.Comment("Define the custom spawn coordinates")
             public CustomCoords customCoords = new CustomCoords();
-            public static class CustomCoords {
-                @Config.Comment("The X spawn coordinate")
-                public double x = 0.0D;
-                @Config.RangeDouble(min = 0.0D, max = 255.0D)
-                @Config.Comment("The Y spawn coordinate")
-                public double y = 64.0D;
-                @Config.Comment("The Z spawn coordinate")
-                public double z = 0.0D;
-            }
         }
 
-        @Config.Comment("The category for defining and modifying a Custom Cake")
-        public CustomEdible customEdible = new CustomEdible();
         public static class CustomEdible {
             @Config.Comment({
                     "Set a list of dimensions to add cakes / apples for.",
@@ -195,6 +206,7 @@ public class ModConfig {
 
             @Config.Comment("Customization of Custom Cake features")
             public CustomCake customCake = new CustomCake();
+
             public static class CustomCake {
                 @Config.Comment("Set to true to make all Custom Cakes pre-fueled upon placed.")
                 public boolean preFueled = false;
@@ -208,9 +220,6 @@ public class ModConfig {
                 public String[] fuel = new String[0];
             }
         }
-
-        @Config.Comment("Set to true to disable the activation of vanilla End Portal.")
-        public boolean disableVanillaEndPortal = false;
 
     }
 

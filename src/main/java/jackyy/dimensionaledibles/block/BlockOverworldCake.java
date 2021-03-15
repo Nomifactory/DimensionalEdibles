@@ -9,7 +9,9 @@ import net.minecraft.tileentity.*;
 import net.minecraft.util.math.*;
 import net.minecraft.world.*;
 
-import static jackyy.dimensionaledibles.util.TeleporterHandler.*;
+import javax.annotation.Nonnull;
+
+import static jackyy.dimensionaledibles.util.TeleporterHandler.getDimPos;
 
 public class BlockOverworldCake extends BlockCakeBase implements ITileEntityProvider {
 
@@ -21,52 +23,29 @@ public class BlockOverworldCake extends BlockCakeBase implements ITileEntityProv
 
     @Override
     protected BlockPos calculateCoordinates(EntityPlayerMP player) {
-        if (ModConfig.tweaks.overworldCake.useWorldSpawn) {
-            WorldServer overworld = player.server.getPlayerList().getServerInstance().getWorld(cakeDimension());
-            return overworld.getTopSolidOrLiquidBlock(overworld.getSpawnPoint());
-        } else
+        if (ModConfig.tweaks.overworldCake.useWorldSpawn)
+            return getWordSpawnPos(player);
+        else
             return getDimPos(player, cakeDimension(), player.getPosition());
     }
 
+    private BlockPos getWordSpawnPos(EntityPlayerMP player) {
+        WorldServer overworld = player.server.getPlayerList().getServerInstance().getWorld(cakeDimension());
+        return overworld.getTopSolidOrLiquidBlock(overworld.getSpawnPoint());
+    }
+
     @Override
-    public TileEntity createNewTileEntity(World worldIn,
+    public TileEntity createNewTileEntity(@Nonnull World worldIn,
                                           int meta) {
         return new TileDimensionCake(cakeDimension(), "Overworld");
     }
 
     @Override
-    protected String cakeFuel() {
-        return ModConfig.tweaks.overworldCake.fuel;
-    }
+    protected ModConfig.CakeConfig config() { return ModConfig.tweaks.overworldCake; }
 
     @Override
-    protected boolean useCustomCoordinates() {
-        return ModConfig.tweaks.overworldCake.useCustomCoords;
-    }
+    protected int cakeDimension() { return 0; }
 
     @Override
-    protected BlockPos customCoordinates() {
-        return new BlockPos(ModConfig.tweaks.overworldCake.customCoords.x,
-                            ModConfig.tweaks.overworldCake.customCoords.y,
-                            ModConfig.tweaks.overworldCake.customCoords.z);
-    }
-
-    @Override
-    protected int cakeDimension() {
-        return 0;
-    }
-
-    @Override
-    protected boolean consumesFuel() {
-        return ModConfig.tweaks.overworldCake.consumeFuel;
-    }
-
-    @Override
-    protected boolean isPreFueled() {
-        return ModConfig.tweaks.overworldCake.preFueled;
-    }
-
-    @Override boolean registerItem() {
-        return ModConfig.general.overworldCake;
-    }
+    public boolean registerItem() { return ModConfig.general.overworldCake; }
 }

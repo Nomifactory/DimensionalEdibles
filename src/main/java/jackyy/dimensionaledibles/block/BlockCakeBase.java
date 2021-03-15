@@ -1,6 +1,7 @@
 package jackyy.dimensionaledibles.block;
 
 import jackyy.dimensionaledibles.*;
+import jackyy.dimensionaledibles.registry.*;
 import jackyy.dimensionaledibles.util.*;
 import mcjty.theoneprobe.api.*;
 import mcp.mobius.waila.api.*;
@@ -62,40 +63,14 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
         setCreativeTab(DimensionalEdibles.TAB);
     }
 
-    /**
-     * Whether this cake comes pre-fueled (true) or starts empty (false)
-     */
-    abstract protected boolean isPreFueled();
+    /** Cake config holder object */
+    abstract protected ModConfig.CakeConfig config();
 
-    /**
-     * Whether this cake should consume fuel.
-     */
-    abstract protected boolean consumesFuel();
-
-    /**
-     * Whether to use custom coordinates
-     */
-    abstract protected boolean useCustomCoordinates();
-
-    /**
-     * Custom Coordinates defined for this cake
-     */
-    abstract protected BlockPos customCoordinates();
-
-    /**
-     * Target dimension for this cake.
-     */
+    /** Target dimension for this cake. */
     abstract protected int cakeDimension();
 
-    /**
-     * Resource name of the fuel item for this cake.
-     */
-    abstract protected String cakeFuel();
-
-    /**
-     * Whether this item should be registered.
-     */
-    abstract boolean registerItem();
+    /** Whether this item should be registered. */
+    abstract protected boolean registerItem();
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state,
@@ -137,7 +112,7 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
 
         ItemStack stack = playerIn.getHeldItem(hand);
         if (!stack.isEmpty() &&
-            stack.getItem() == Item.REGISTRY.getObject(new ResourceLocation(this.cakeFuel())) &&
+            stack.getItem() == Item.REGISTRY.getObject(new ResourceLocation(config().fuel())) &&
             fuelUntilFull != 0) {
             if (meta >= 0) {
                 worldIn.setBlockState(pos, state.withProperty(BITES, meta), 2);
@@ -147,7 +122,7 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
             }
         } else if (worldIn.provider.getDimension() != this.cakeDimension()) {
             if (!worldIn.isRemote)
-                if (playerIn.capabilities.isCreativeMode || !this.consumesFuel())
+                if (playerIn.capabilities.isCreativeMode || !config().consumesFuel())
                     teleportPlayer(worldIn, playerIn);
                 else
                     consumeCake(worldIn, pos, playerIn);
@@ -171,9 +146,8 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                                 BlockPos pos,
                                 Block blockIn,
                                 BlockPos fromPos) {
-        if (!this.canBlockStay(worldIn, pos)) {
+        if (!this.canBlockStay(worldIn, pos))
             worldIn.setBlockToAir(pos);
-        }
     }
 
     private boolean canBlockStay(World worldIn,
@@ -266,7 +240,7 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                                             int meta,
                                             EntityLivingBase placer,
                                             EnumHand hand) {
-        return getDefaultState().withProperty(BITES, isPreFueled() ? 0 : MAX_BITES);
+        return getDefaultState().withProperty(BITES, config().preFueled() ? 0 : MAX_BITES);
     }
 
     /**
@@ -276,8 +250,8 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                                   EntityPlayer player) {
         EntityPlayerMP playerMP = (EntityPlayerMP) player;
         BlockPos coords;
-        if (useCustomCoordinates())
-            coords = customCoordinates();
+        if (config().useCustomCoordinates())
+            coords = config().customCoords().toBlockPos();
         else
             coords = calculateCoordinates(playerMP);
 
