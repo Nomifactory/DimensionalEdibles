@@ -13,6 +13,9 @@ tile.dimensionaledibles.nether_cake.name=Nether Cake
 tile.dimensionaledibles.overworld_cake.name=Overworld Cake
 tile.dimensionaledibles.custom_cake.name=Custom Cake
 
+#Tooltip
+tooltip.dimensionaledibles.cake=§3§oRefill using %s.§r
+
 #JEI Compat
 dimensionaledibles.end_cake.jeidesc=Place the cake down and fill it with %d, then right click on the cake and you'll be teleported to The End. The cake has infinite uses as long as it is fueled.
 dimensionaledibles.nether_cake.jeidesc=Place the cake down and fill it with %d, then right click on the cake and you'll be teleported to the Nether. The cake has infinite uses as long as it is fueled.

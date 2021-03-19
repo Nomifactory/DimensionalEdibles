@@ -9,6 +9,8 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.block.properties.*;
 import net.minecraft.block.state.*;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.*;
@@ -20,6 +22,7 @@ import net.minecraft.util.text.*;
 import net.minecraft.world.*;
 import net.minecraftforge.fml.relauncher.*;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 import static jackyy.dimensionaledibles.util.TeleporterHandler.*;
@@ -297,5 +300,14 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                              NonNullList<ItemStack> list) {
         if (registerItem())
             list.add(new ItemStack(this));
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+        // Why do I need to add ".name"? Thank you Lex.
+        tooltip.add(I18n.format("tooltip.dimensionaledibles.cake",
+                I18n.format(getFuelItemStack().getTranslationKey() + ".name")));
     }
 }
