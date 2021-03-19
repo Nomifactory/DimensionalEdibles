@@ -286,7 +286,7 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
     }
 
     /**
-     * Get the Cake Fuel as an ItemStack to maintain NBT data.
+     * Get the Cake Fuel as an ItemStack to maintain NBT data and Metadata.
      * @return The Fuel as an ItemStack
      */
     private ItemStack getFuelItemStack() {
