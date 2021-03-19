@@ -112,7 +112,7 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
 
         ItemStack stack = playerIn.getHeldItem(hand);
         if (!stack.isEmpty() &&
-            stack.getItem() == Item.REGISTRY.getObject(new ResourceLocation(config().fuel())) &&
+            ItemStack.areItemsEqual(stack, getFuelItemStack()) &&
             fuelUntilFull != 0) {
             if (meta >= 0) {
                 worldIn.setBlockState(pos, state.withProperty(BITES, meta), 2);
@@ -280,6 +280,15 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                 teleportPlayer(world, player);
             }
         }
+    }
+
+    /**
+     * Get the Cake Fuel as an ItemStack to maintain NBT data.
+     * @return The Fuel as an ItemStack
+     */
+    private ItemStack getFuelItemStack() {
+        return new ItemStack(Objects.requireNonNull(
+                Item.REGISTRY.getObject(new ResourceLocation(config().fuel()))));
     }
 
     @Override
