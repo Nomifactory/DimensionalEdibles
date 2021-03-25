@@ -4,6 +4,8 @@ import jackyy.dimensionaledibles.*;
 import jackyy.dimensionaledibles.block.tile.*;
 import jackyy.dimensionaledibles.registry.*;
 import net.minecraft.block.*;
+import net.minecraft.init.*;
+import net.minecraft.item.*;
 import net.minecraft.tileentity.*;
 import net.minecraft.world.*;
 
@@ -31,4 +33,8 @@ public class BlockNetherCake extends BlockCakeBase implements ITileEntityProvide
 
     @Override
     public boolean registerItem() { return ModConfig.general.netherCake; }
+
+    @Nonnull
+    @Override
+    protected ItemStack defaultFuel() { return new ItemStack(Blocks.OBSIDIAN); }
 }

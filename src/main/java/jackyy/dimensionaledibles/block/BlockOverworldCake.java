@@ -5,6 +5,8 @@ import jackyy.dimensionaledibles.block.tile.*;
 import jackyy.dimensionaledibles.registry.*;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.*;
+import net.minecraft.init.*;
+import net.minecraft.item.*;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.math.*;
 import net.minecraft.world.*;
@@ -48,4 +50,8 @@ public class BlockOverworldCake extends BlockCakeBase implements ITileEntityProv
 
     @Override
     public boolean registerItem() { return ModConfig.general.overworldCake; }
+
+    @Nonnull
+    @Override
+    protected ItemStack defaultFuel() { return new ItemStack(Blocks.SAPLING,1,0); } // Oak Sapling
 }

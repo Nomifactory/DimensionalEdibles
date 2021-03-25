@@ -20,6 +20,7 @@ import net.minecraft.util.text.*;
 import net.minecraft.world.*;
 import net.minecraftforge.fml.relauncher.*;
 
+import javax.annotation.*;
 import java.util.*;
 
 import static jackyy.dimensionaledibles.util.TeleporterHandler.*;
@@ -71,6 +72,10 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
 
     /** Whether this item should be registered. */
     abstract protected boolean registerItem();
+
+    /** The default fuel for this cake type, in the event of a configuration parse error. */
+    @Nonnull
+    abstract protected ItemStack defaultFuel();
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state,
