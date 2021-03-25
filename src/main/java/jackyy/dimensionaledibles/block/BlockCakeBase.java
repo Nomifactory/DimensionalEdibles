@@ -289,11 +289,13 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
 
     /**
      * Get the Cake Fuel as an ItemStack to maintain NBT data and Metadata.
-     * @return The Fuel as an ItemStack
+     *
+     * @return The Fuel as an ItemStack if the Config entry is well-formed,
+     *         {@link #defaultFuel} otherwise.
      */
     private ItemStack getFuelItemStack() {
-        return new ItemStack(Objects.requireNonNull(
-                Item.REGISTRY.getObject(new ResourceLocation(config().fuel()))));
+        Item configItem = Item.REGISTRY.getObject(new ResourceLocation(config().fuel()));
+        return configItem == null ? defaultFuel() : new ItemStack(configItem);
     }
 
     @Override
