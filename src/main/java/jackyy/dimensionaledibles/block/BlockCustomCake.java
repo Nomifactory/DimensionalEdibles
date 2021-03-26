@@ -7,6 +7,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.state.*;
 import net.minecraft.creativetab.*;
 import net.minecraft.entity.player.*;
+import net.minecraft.init.*;
 import net.minecraft.item.*;
 import net.minecraft.nbt.*;
 import net.minecraft.tileentity.*;
@@ -167,4 +168,8 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
 
     @Override
     public int cakeDimension() { return cakeDimension; }
+
+    @Override
+    @Nonnull
+    public ItemStack defaultFuel() { return ItemStack.EMPTY; }
 }
