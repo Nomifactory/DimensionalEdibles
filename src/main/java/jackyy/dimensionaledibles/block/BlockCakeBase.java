@@ -20,6 +20,7 @@ import net.minecraft.util.text.*;
 import net.minecraft.world.*;
 import net.minecraftforge.fml.relauncher.*;
 
+import javax.annotation.*;
 import java.util.*;
 
 import static jackyy.dimensionaledibles.util.TeleporterHandler.*;
@@ -72,6 +73,10 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
     /** Whether this item should be registered. */
     abstract protected boolean registerItem();
 
+    /** The default fuel for this cake type, in the event of a configuration parse error. */
+    @Nonnull
+    abstract protected ItemStack defaultFuel();
+
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state,
                                         IBlockAccess source,
@@ -112,7 +117,7 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
 
         ItemStack stack = playerIn.getHeldItem(hand);
         if (!stack.isEmpty() &&
-            stack.getItem() == Item.REGISTRY.getObject(new ResourceLocation(config().fuel())) &&
+            ItemStack.areItemsEqual(stack, getFuelItemStack()) &&
             fuelUntilFull != 0) {
             if (meta >= 0) {
                 worldIn.setBlockState(pos, state.withProperty(BITES, meta), 2);
@@ -280,6 +285,17 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                 teleportPlayer(world, player);
             }
         }
+    }
+
+    /**
+     * Get the Cake Fuel as an ItemStack to maintain NBT data and Metadata.
+     *
+     * @return The Fuel as an ItemStack if the Config entry is well-formed,
+     *         {@link #defaultFuel} otherwise.
+     */
+    private ItemStack getFuelItemStack() {
+        Item configItem = Item.REGISTRY.getObject(new ResourceLocation(config().fuel()));
+        return configItem == null ? defaultFuel() : new ItemStack(configItem);
     }
 
     @Override
