@@ -22,7 +22,7 @@ import net.minecraft.util.text.*;
 import net.minecraft.world.*;
 import net.minecraftforge.fml.relauncher.*;
 
-import javax.annotation.Nullable;
+import javax.annotation.*;
 import java.util.*;
 
 import static jackyy.dimensionaledibles.util.TeleporterHandler.*;
@@ -74,6 +74,10 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
 
     /** Whether this item should be registered. */
     abstract protected boolean registerItem();
+
+    /** The default fuel for this cake type, in the event of a configuration parse error. */
+    @Nonnull
+    abstract protected ItemStack defaultFuel();
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state,
@@ -287,11 +291,13 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
 
     /**
      * Get the Cake Fuel as an ItemStack to maintain NBT data and Metadata.
-     * @return The Fuel as an ItemStack
+     *
+     * @return The Fuel as an ItemStack if the Config entry is well-formed,
+     *         {@link #defaultFuel} otherwise.
      */
     private ItemStack getFuelItemStack() {
-        return new ItemStack(Objects.requireNonNull(
-                Item.REGISTRY.getObject(new ResourceLocation(config().fuel()))));
+        Item configItem = Item.REGISTRY.getObject(new ResourceLocation(config().fuel()));
+        return configItem == null ? defaultFuel() : new ItemStack(configItem);
     }
 
     @Override

@@ -4,9 +4,12 @@ import jackyy.dimensionaledibles.*;
 import jackyy.dimensionaledibles.block.tile.*;
 import jackyy.dimensionaledibles.registry.*;
 import net.minecraft.block.*;
+import net.minecraft.init.*;
+import net.minecraft.item.*;
 import net.minecraft.tileentity.*;
-import net.minecraft.util.math.*;
 import net.minecraft.world.*;
+
+import javax.annotation.*;
 
 public class BlockEndCake extends BlockCakeBase implements ITileEntityProvider {
 
@@ -32,4 +35,8 @@ public class BlockEndCake extends BlockCakeBase implements ITileEntityProvider {
 
     @Override
     public boolean registerItem() { return ModConfig.general.endCake; }
+
+    @Nonnull
+    @Override
+    protected ItemStack defaultFuel() { return new ItemStack(Items.ENDER_EYE); }
 }
