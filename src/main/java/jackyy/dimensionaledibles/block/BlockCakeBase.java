@@ -303,11 +303,16 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
     }
 
     @Override
+    @SuppressWarnings("all")
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        // Why do I need to add ".name"? Thank you Lex.
-        tooltip.add(I18n.format("tooltip.dimensionaledibles.cake",
-                I18n.format(getFuelItemStack().getTranslationKey() + ".name")));
+        ItemStack fuelStack = getFuelItemStack();
+        if (fuelStack == ItemStack.EMPTY)
+            tooltip.add("tooltip.dimensionaledibles.custom_cake.bad_config");
+        else
+            // Why do I need to add ".name"? Thank you Lex.
+            tooltip.add(I18n.format("tooltip.dimensionaledibles.cake",
+                    I18n.format(getFuelItemStack().getTranslationKey() + ".name")));
     }
 }
