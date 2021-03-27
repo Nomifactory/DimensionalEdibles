@@ -22,7 +22,7 @@ import net.minecraft.util.text.*;
 import net.minecraft.world.*;
 import net.minecraftforge.fml.relauncher.*;
 
-import javax.annotation.*;
+import javax.annotation.Nonnull;
 import java.util.*;
 
 import static jackyy.dimensionaledibles.util.TeleporterHandler.*;
@@ -309,9 +309,8 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
     }
 
     @Override
-    @SuppressWarnings("all")
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         ItemStack fuelStack = getFuelItemStack();
         if (fuelStack == ItemStack.EMPTY)
