@@ -296,7 +296,11 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
      *         {@link #defaultFuel} otherwise.
      */
     private ItemStack getFuelItemStack() {
-        Item configItem = Item.REGISTRY.getObject(new ResourceLocation(config().fuel()));
+        String fuel = config().fuel();
+        if (fuel == null || fuel.equals(""))
+            return defaultFuel();
+
+        Item configItem = Item.REGISTRY.getObject(new ResourceLocation(fuel));
         return configItem == null ? defaultFuel() : new ItemStack(configItem);
     }
 
@@ -314,7 +318,7 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
         super.addInformation(stack, worldIn, tooltip, flagIn);
         ItemStack fuelStack = getFuelItemStack();
         if (fuelStack == ItemStack.EMPTY)
-            tooltip.add("tooltip.dimensionaledibles.custom_cake.bad_config");
+            tooltip.add(I18n.format("tooltip.dimensionaledibles.custom_cake.bad_config"));
         else
             // Why do I need to add ".name"? Thank you Lex.
             tooltip.add(I18n.format("tooltip.dimensionaledibles.cake",
