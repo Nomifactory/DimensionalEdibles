@@ -1,5 +1,6 @@
 package jackyy.dimensionaledibles;
 
+import jackyy.dimensionaledibles.block.BlockCustomCake;
 import jackyy.dimensionaledibles.command.DimensionalEdiblesCommand;
 import jackyy.dimensionaledibles.proxy.CommonProxy;
 import jackyy.dimensionaledibles.registry.ModBlocks;
@@ -11,7 +12,14 @@ import net.minecraftforge.fml.common.event.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(modid = DimensionalEdibles.MODID, name = DimensionalEdibles.MODNAME, version = DimensionalEdibles.VERSION, acceptedMinecraftVersions = DimensionalEdibles.MCVERSION, dependencies = DimensionalEdibles.DEPENDS, certificateFingerprint = "@FINGERPRINT@", useMetadata = true)
+@Mod(modid = DimensionalEdibles.MODID,
+    name = DimensionalEdibles.MODNAME,
+    version = DimensionalEdibles.VERSION,
+    acceptedMinecraftVersions = DimensionalEdibles.MCVERSION,
+    dependencies = DimensionalEdibles.DEPENDS,
+    certificateFingerprint = "@FINGERPRINT@",
+    useMetadata = true)
+@SuppressWarnings("unused")
 public class DimensionalEdibles {
 
     public static final String VERSION = "GRADLE:VERSION";
@@ -33,6 +41,7 @@ public class DimensionalEdibles {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         proxy.preInit(event);
+        BlockCustomCake.rebuildCache();
     }
 
     @Mod.EventHandler

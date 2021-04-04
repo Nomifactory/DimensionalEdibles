@@ -1,6 +1,7 @@
 package jackyy.dimensionaledibles.block;
 
 import jackyy.dimensionaledibles.*;
+import jackyy.dimensionaledibles.item.*;
 import jackyy.dimensionaledibles.registry.*;
 import jackyy.dimensionaledibles.util.*;
 import mcjty.theoneprobe.api.*;
@@ -26,6 +27,7 @@ import javax.annotation.Nonnull;
 import java.util.*;
 
 import static jackyy.dimensionaledibles.util.TeleporterHandler.*;
+import static jackyy.dimensionaledibles.item.ItemBlockCustomCake.getDimID;
 
 /**
  * This is based on the vanilla cake class, but slightly modified and added
@@ -119,7 +121,7 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
 
         ItemStack stack = playerIn.getHeldItem(hand);
         if (!stack.isEmpty() &&
-            ItemStack.areItemsEqual(stack, getFuelItemStack()) &&
+            ItemStack.areItemsEqual(stack, getFuelItemStack(this.cakeDimension())) &&
             fuelUntilFull != 0) {
             if (meta >= 0) {
                 worldIn.setBlockState(pos, state.withProperty(BITES, meta), 2);
@@ -257,8 +259,8 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                                   EntityPlayer player) {
         EntityPlayerMP playerMP = (EntityPlayerMP) player;
         BlockPos coords;
-        if (config().useCustomCoordinates())
-            coords = config().customCoords().toBlockPos();
+        if (config().useCustomCoordinates(this.cakeDimension()))
+            coords = config().customCoords(this.cakeDimension()).toBlockPos();
         else
             coords = calculateCoordinates(playerMP);
 
@@ -295,8 +297,8 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
      * @return The Fuel as an ItemStack if the Config entry is well-formed,
      *         {@link #defaultFuel} otherwise.
      */
-    private ItemStack getFuelItemStack() {
-        String fuel = config().fuel();
+    private ItemStack getFuelItemStack(int dim) {
+        String fuel = config().fuel(dim);
         if (fuel == null || fuel.equals(""))
             return defaultFuel();
 
@@ -316,12 +318,12 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        ItemStack fuelStack = getFuelItemStack();
+        ItemStack fuelStack = getFuelItemStack(getDimID(stack));
         if (fuelStack == ItemStack.EMPTY)
             tooltip.add(I18n.format("tooltip.dimensionaledibles.custom_cake.bad_config"));
         else
             // Why do I need to add ".name"? Thank you Lex.
             tooltip.add(I18n.format("tooltip.dimensionaledibles.cake",
-                    I18n.format(getFuelItemStack().getTranslationKey() + ".name")));
+                    I18n.format(fuelStack.getTranslationKey() + ".name")));
     }
 }

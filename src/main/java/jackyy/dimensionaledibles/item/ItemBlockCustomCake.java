@@ -53,7 +53,7 @@ public class ItemBlockCustomCake extends ItemBlock {
         return nbt.getString("cakeName");
     }
 
-    public int getDimID(ItemStack stack) {
+    public static int getDimID(ItemStack stack) {
         NBTTagCompound nbt = stack.getTagCompound();
         if (nbt == null || !nbt.hasKey("dimID")) {
             return 0;

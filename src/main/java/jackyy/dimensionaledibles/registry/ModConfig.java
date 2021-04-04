@@ -1,12 +1,12 @@
 package jackyy.dimensionaledibles.registry;
 
-import jackyy.dimensionaledibles.DimensionalEdibles;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.ConfigManager;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import jackyy.dimensionaledibles.*;
+import jackyy.dimensionaledibles.block.*;
+import net.minecraft.util.math.*;
+import net.minecraftforge.common.config.*;
+import net.minecraftforge.fml.client.event.*;
+import net.minecraftforge.fml.common.*;
+import net.minecraftforge.fml.common.eventhandler.*;
 
 @Config(modid = DimensionalEdibles.MODID, name = "DimensionalEdibles", category = DimensionalEdibles.MODID)
 public class ModConfig {
@@ -17,8 +17,11 @@ public class ModConfig {
     public static Tweaks tweaks = new Tweaks();
 
     public interface CakeConfig {
-        /** Resource name of the fuel item for this cake. */
-        String fuel();
+        /**
+         * Resource name of the fuel item for this cake.
+         * @param dim target dimension (ignored except for CustomEdible)
+         */
+        String fuel(int dim);
 
         /** Whether this cake comes pre-fueled (true) or starts empty (false) */
         boolean preFueled();
@@ -26,11 +29,17 @@ public class ModConfig {
         /** Whether this cake should consume fuel. */
         boolean consumesFuel();
 
-        /** Whether to use custom coordinates */
-        boolean useCustomCoordinates();
+        /**
+         *  Whether to use custom coordinates
+         * @param dim target dimension (ignored except for CustomEdible)
+         */
+        boolean useCustomCoordinates(int dim);
 
-        /** Custom Coordinates defined for this cake */
-        CustomCoords customCoords();
+        /**
+         * Custom Coordinates defined for this cake
+         * @param dim target dimension (ignored except for CustomEdible)
+         */
+        CustomCoords customCoords(int dim);
     }
 
     public static class General {
@@ -77,6 +86,11 @@ public class ModConfig {
         public BlockPos toBlockPos() {
             return new BlockPos(x, y, z);
         }
+
+        @Override
+        public String toString() {
+            return String.format("<%.2f,%.2f,%.2f>",x,y,z);
+        }
     }
 
     public static class Tweaks {
@@ -111,11 +125,11 @@ public class ModConfig {
             public CustomCoords customCoords = new CustomCoords();
 
             // boilerplate
-            public String fuel() { return fuel; }
+            public String fuel(int dim) { return fuel; }
             public boolean preFueled() { return preFueled; }
             public boolean consumesFuel() { return consumeFuel; }
-            public boolean useCustomCoordinates() { return useCustomCoords; }
-            public CustomCoords customCoords() { return customCoords; }
+            public boolean useCustomCoordinates(int dim) { return useCustomCoords; }
+            public CustomCoords customCoords(int dim) { return customCoords; }
         }
 
         public static class EnderApple {
@@ -138,11 +152,11 @@ public class ModConfig {
             public CustomCoords customCoords = new CustomCoords();
 
             // boilerplate
-            public String fuel() { return fuel; }
+            public String fuel(int dim) { return fuel; }
             public boolean preFueled() { return preFueled; }
             public boolean consumesFuel() { return consumeFuel; }
-            public boolean useCustomCoordinates() { return useCustomCoords; }
-            public CustomCoords customCoords() { return customCoords; }
+            public boolean useCustomCoordinates(int dim) { return useCustomCoords; }
+            public CustomCoords customCoords(int dim) { return customCoords; }
         }
 
         public static class NetherApple {
@@ -170,11 +184,11 @@ public class ModConfig {
             public CustomCoords customCoords = new CustomCoords();
 
             // boilerplate
-            public String fuel() { return fuel; }
+            public String fuel(int dim) { return fuel; }
             public boolean preFueled() { return preFueled; }
             public boolean consumesFuel() { return consumeFuel; }
-            public boolean useCustomCoordinates() { return useCustomCoords; }
-            public CustomCoords customCoords() { return customCoords; }
+            public boolean useCustomCoordinates(int dim) { return useCustomCoords; }
+            public CustomCoords customCoords(int dim) { return customCoords; }
         }
 
         public static class OverworldApple {
@@ -226,9 +240,11 @@ public class ModConfig {
     @Mod.EventBusSubscriber
     public static class ConfigHolder {
         @SubscribeEvent
+        @SuppressWarnings("unused")
         public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
             if (event.getModID().equals(DimensionalEdibles.MODID)) {
                 ConfigManager.sync(DimensionalEdibles.MODID, Config.Type.INSTANCE);
+                BlockCustomCake.rebuildCache();
             }
         }
     }
