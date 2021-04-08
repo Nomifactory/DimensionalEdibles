@@ -229,7 +229,7 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                      .text(TextFormatting.GREEN + "Bites: ")
                      .progress(MAX_BITES - blockState.getValue(BITES), MAX_BITES);
             probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
-                     .item(getFuelItemStack(cakeDimension()))
+                     .item(fuelStack)
                      .text(TextFormatting.GREEN + "Refill: " + fuel);
         }
     }
