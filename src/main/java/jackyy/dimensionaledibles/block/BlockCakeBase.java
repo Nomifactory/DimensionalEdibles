@@ -216,11 +216,21 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                              World world,
                              IBlockState blockState,
                              IProbeHitData data) {
+
+        ItemStack fuelStack = getFuelItemStack(this.cakeDimension());
+        //Only the custom cake falls back to a default empty ItemStack, so if the ItemStack is empty, the cake is a
+        //custom cake with a bad fuel entry
+        String fuel = fuelStack.isEmpty() ? I18n.format("tooltip.dimensionaledibles.custom_cake.bad_config") :
+                I18n.format(fuelStack.getTranslationKey() + ".name");
+
         if (world.getBlockState(data.getPos()).getBlock() instanceof BlockCakeBase) {
             probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
                      .item(new ItemStack(Items.CAKE))
                      .text(TextFormatting.GREEN + "Bites: ")
                      .progress(MAX_BITES - blockState.getValue(BITES), MAX_BITES);
+            probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
+                     .item(getFuelItemStack(cakeDimension()))
+                     .text(TextFormatting.GREEN + "Refill: " + fuel);
         }
     }
 
@@ -229,9 +239,15 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                                      List<String> currentTip,
                                      IWailaDataAccessor accessor,
                                      IWailaConfigHandler config) {
+
+        ItemStack fuelStack = getFuelItemStack(this.cakeDimension());
+        String fuel = fuelStack.isEmpty() ? I18n.format("tooltip.dimensionaledibles.custom_cake.bad_config") :
+                I18n.format(fuelStack.getTranslationKey() + ".name");
+
         if (accessor.getBlockState().getBlock() instanceof BlockCakeBase) {
             currentTip.add(TextFormatting.GRAY + "Bites: " +
                            (MAX_BITES - accessor.getBlockState().getValue(BITES)) + " / " + MAX_BITES);
+            currentTip.add(TextFormatting.GRAY + "Refill: " + fuel);
         }
         return currentTip;
     }
