@@ -1,16 +1,14 @@
 package jackyy.dimensionaledibles;
 
-import jackyy.dimensionaledibles.block.BlockCustomCake;
-import jackyy.dimensionaledibles.command.DimensionalEdiblesCommand;
-import jackyy.dimensionaledibles.proxy.CommonProxy;
-import jackyy.dimensionaledibles.registry.ModBlocks;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.SidedProxy;
+import jackyy.dimensionaledibles.block.*;
+import jackyy.dimensionaledibles.command.*;
+import jackyy.dimensionaledibles.proxy.*;
+import jackyy.dimensionaledibles.registry.*;
+import net.minecraft.creativetab.*;
+import net.minecraft.item.*;
+import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 @Mod(modid = DimensionalEdibles.MODID,
     name = DimensionalEdibles.MODNAME,
@@ -56,7 +54,9 @@ public class DimensionalEdibles {
 
     @Mod.EventHandler
     public void onFingerprintViolation(FMLFingerprintViolationEvent event) {
-        logger.warn("Invalid fingerprint detected! The file " + event.getSource().getName() + " may have been modified. This will NOT be supported by the mod author!");
+        logger.warn(
+            "Invalid fingerprint detected! The file \"{}\" may have been modified. This will NOT be supported by the mod author!",
+            event.getSource().getName());
     }
 
     @Mod.EventHandler

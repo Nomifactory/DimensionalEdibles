@@ -1,7 +1,6 @@
 package jackyy.dimensionaledibles.block;
 
 import jackyy.dimensionaledibles.*;
-import jackyy.dimensionaledibles.item.*;
 import jackyy.dimensionaledibles.registry.*;
 import jackyy.dimensionaledibles.util.*;
 import mcjty.theoneprobe.api.*;
@@ -10,8 +9,8 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.block.properties.*;
 import net.minecraft.block.state.*;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.client.resources.*;
+import net.minecraft.client.util.*;
 import net.minecraft.creativetab.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.*;
@@ -23,11 +22,12 @@ import net.minecraft.util.text.*;
 import net.minecraft.world.*;
 import net.minecraftforge.fml.relauncher.*;
 
-import javax.annotation.Nonnull;
+import javax.annotation.*;
 import java.util.*;
 
+import static jackyy.dimensionaledibles.DimensionalEdibles.*;
+import static jackyy.dimensionaledibles.item.ItemBlockCustomCake.*;
 import static jackyy.dimensionaledibles.util.TeleporterHandler.*;
-import static jackyy.dimensionaledibles.item.ItemBlockCustomCake.getDimID;
 
 /**
  * This is based on the vanilla cake class, but slightly modified and added
@@ -315,9 +315,10 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
      */
     private ItemStack getFuelItemStack(int dim) {
         String fuel = config().fuel(dim);
-        if (fuel == null || fuel.equals(""))
+        if (fuel == null || fuel.equals("")) {
+            logger.error("Could not parse fuel for cake (dimension \"{}\"). Falling back to default fuel.", dim);
             return defaultFuel();
-
+        }
         Item configItem = Item.REGISTRY.getObject(new ResourceLocation(fuel));
         return configItem == null ? defaultFuel() : new ItemStack(configItem);
     }

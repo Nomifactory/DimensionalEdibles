@@ -17,7 +17,6 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.*;
 import net.minecraftforge.common.*;
 import net.minecraftforge.fml.relauncher.*;
-import org.apache.logging.log4j.*;
 
 import javax.annotation.*;
 
@@ -67,7 +66,7 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
 
         int dim = getDimension(world, pos);
         if(!cache.containsKey(dim)) {
-            logger.log(Level.ERROR, "No such dimension: " + dim);
+            logger.error("No such dimension: \"{}\"", dim);
             return true;
         }
 
@@ -102,13 +101,12 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
             try {
                 String[] parts = s.split(",");
                 if (parts.length < 4) {
-                    logger.log(Level.ERROR,
-                               s + " is not a valid input line! Format needs to be: <dimID>, <x>, <y>, <z>");
+                    logger.error("\"{}\" is not a valid input line! Format needs to be: <dimID>, <x>, <y>, <z>", s);
                     continue;
                 }
                 int dim = Integer.parseInt(parts[0].trim());
                 if(!newCache.containsKey(dim)) {
-                    logger.log(Level.ERROR, "Unrecognized dimension: \"" + dim + "\"");
+                    logger.error("Unrecognized dimension: \"{}\"", dim);
                     return;
                 }
                 CustomCake cake = newCache.get(dim);
@@ -119,8 +117,7 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
                 cc.z = Integer.parseInt(parts[3].trim());
 
             } catch(NumberFormatException e) {
-                logger.log(Level.ERROR,
-                           s + " is not a valid line input! The dimension ID needs to be a number!");
+                logger.error("\"{}\" is not a valid line input! The dimension ID needs to be a number!", s, e);
                 return;
             }
         }
@@ -129,8 +126,7 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
             try {
                 String[] parts = s.split(",");
                 if (parts.length < 2) {
-                    logger.log(Level.ERROR,
-                               s + " is not a valid input line! Format needs to be: <dimID>, <cakeFuel>");
+                    logger.error("\"{}\" is not a valid input line! Format needs to be: <dimID>, <cakeFuel>", s);
                     return;
                 }
                 int dim = Integer.parseInt(parts[0].trim());
@@ -138,8 +134,7 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
 
                 cake.cakeFuel = parts[1].trim();
             } catch(NumberFormatException e) {
-                logger.log(Level.ERROR,
-                           s + " is not a valid line input! The dimension ID needs to be a number!");
+                logger.error("\"{}\" is not a valid line input! The dimension ID needs to be a number!", s, e);
                 return;
             }
         }
@@ -157,8 +152,7 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
                 try {
                     String[] parts = s.split(",");
                     if (parts.length < 2) {
-                        logger.log(Level.ERROR,
-                                   s + " is not a valid input line! Format needs to be: <dimID>, <cakeName>");
+                        logger.error("\"{}\" is not a valid input line! Format needs to be: <dimID>, <cakeName>", s);
                         continue;
                     }
                     int dimension = Integer.parseInt(parts[0].trim());
@@ -173,11 +167,10 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
                         nbt.setString("cakeName", parts[1].trim());
                         list.add(stack);
                     } else {
-                        logger.log(Level.ERROR, parts[0] + " is not a valid dimension ID!");
+                        logger.error("\"{}\" is not a valid dimension ID!", parts[0]);
                     }
                 } catch(NumberFormatException e) {
-                    logger.log(Level.ERROR,
-                               s + " is not a valid line input! The dimension ID needs to be a number!");
+                    logger.error("\"{}\" is not a valid line input! The dimension ID needs to be a number!", s, e);
                 }
             }
         }
