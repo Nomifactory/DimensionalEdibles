@@ -4,6 +4,7 @@ import jackyy.dimensionaledibles.*;
 import jackyy.dimensionaledibles.block.tile.*;
 import jackyy.dimensionaledibles.item.*;
 import jackyy.dimensionaledibles.registry.*;
+import jackyy.dimensionaledibles.util.*;
 import net.minecraft.block.*;
 import net.minecraft.block.state.*;
 import net.minecraft.creativetab.*;
@@ -19,7 +20,6 @@ import net.minecraftforge.fml.relauncher.*;
 import org.apache.logging.log4j.*;
 
 import javax.annotation.*;
-import java.util.*;
 
 import static jackyy.dimensionaledibles.DimensionalEdibles.*;
 
@@ -30,7 +30,7 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
 
     private static class CustomCake {
         public ModConfig.CustomCoords customCoords = new ModConfig.CustomCoords(0,0,0);
-        private String cakeFuel = "minecraft:air";
+        private String cakeFuel = null;
         private final int cakeDimension;
 
         public CustomCake(int dim) {
@@ -44,7 +44,7 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
         }
     }
 
-    private static Map<Integer, CustomCake> cache = new HashMap<>();
+    private static Cache<Integer, CustomCake> cache = new Cache<>();
 
     public BlockCustomCake() {
         super();
@@ -89,7 +89,7 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
      *  This should be private but Forge forced my hand.
      */
     public static void rebuildCache() {
-        Map<Integer,CustomCake> newCache = new HashMap<>();
+        Cache<Integer,CustomCake> newCache = new Cache<>();
 
         NonNullList<ItemStack> subBlocks = NonNullList.create();
         new BlockCustomCake().getSubBlocks(CreativeTabs.BUILDING_BLOCKS, subBlocks);
@@ -192,24 +192,20 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
     private final ModConfig.CakeConfig conf = new ModConfig.CakeConfig() {
         @Override
         public String fuel(int dim) {
-            if(cache.containsKey(dim))
-                return cache.get(dim).cakeFuel;
-            else
-                return "minecraft:air";
+            return cache.getPropertyIfPresentOrNull(dim, c -> c.cakeFuel);
         }
 
         @Override
         public boolean useCustomCoordinates(int dim) {
-            if(cache.containsKey(dim)) {
-                ModConfig.CustomCoords cc = cache.get(dim).customCoords;
+            return cache.getPropertyIfPresentOrElse(dim, c -> {
+                ModConfig.CustomCoords cc = c.customCoords;
                 return (cc.x != 0 || cc.y != 0 || cc.z != 0);
-            }
-            return false;
+            }, () -> false);
         }
 
         @Override
         public ModConfig.CustomCoords customCoords(int dim) {
-                return cache.getOrDefault(dim, new CustomCake(dim)).customCoords;
+            return cache.getPropertyIfPresentOrElse(dim, c -> c.customCoords, () -> new CustomCake(dim).customCoords);
         }
 
         @Override
