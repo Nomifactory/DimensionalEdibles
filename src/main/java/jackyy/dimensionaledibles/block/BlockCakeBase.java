@@ -9,6 +9,8 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.block.properties.*;
 import net.minecraft.block.state.*;
+import net.minecraft.client.resources.*;
+import net.minecraft.client.util.*;
 import net.minecraft.creativetab.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.*;
@@ -23,6 +25,8 @@ import net.minecraftforge.fml.relauncher.*;
 import javax.annotation.*;
 import java.util.*;
 
+import static jackyy.dimensionaledibles.DimensionalEdibles.*;
+import static jackyy.dimensionaledibles.item.ItemBlockCustomCake.*;
 import static jackyy.dimensionaledibles.util.TeleporterHandler.*;
 
 /**
@@ -117,7 +121,7 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
 
         ItemStack stack = playerIn.getHeldItem(hand);
         if (!stack.isEmpty() &&
-            ItemStack.areItemsEqual(stack, getFuelItemStack()) &&
+            ItemStack.areItemsEqual(stack, getFuelItemStack(this.cakeDimension())) &&
             fuelUntilFull != 0) {
             if (meta >= 0) {
                 worldIn.setBlockState(pos, state.withProperty(BITES, meta), 2);
@@ -212,11 +216,21 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                              World world,
                              IBlockState blockState,
                              IProbeHitData data) {
+
+        ItemStack fuelStack = getFuelItemStack(this.cakeDimension());
+        //Only the custom cake falls back to a default empty ItemStack, so if the ItemStack is empty, the cake is a
+        //custom cake with a bad fuel entry
+        String fuel = fuelStack.isEmpty() ? I18n.format("tooltip.dimensionaledibles.custom_cake.bad_config") :
+                I18n.format(fuelStack.getTranslationKey() + ".name");
+
         if (world.getBlockState(data.getPos()).getBlock() instanceof BlockCakeBase) {
             probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
                      .item(new ItemStack(Items.CAKE))
                      .text(TextFormatting.GREEN + "Bites: ")
                      .progress(MAX_BITES - blockState.getValue(BITES), MAX_BITES);
+            probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
+                     .item(fuelStack.isEmpty() ? new ItemStack(Blocks.BARRIER) : fuelStack)
+                     .text(TextFormatting.GREEN + "Refill: " + fuel);
         }
     }
 
@@ -225,9 +239,15 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                                      List<String> currentTip,
                                      IWailaDataAccessor accessor,
                                      IWailaConfigHandler config) {
+
+        ItemStack fuelStack = getFuelItemStack(this.cakeDimension());
+        String fuel = fuelStack.isEmpty() ? I18n.format("tooltip.dimensionaledibles.custom_cake.bad_config") :
+                I18n.format(fuelStack.getTranslationKey() + ".name");
+
         if (accessor.getBlockState().getBlock() instanceof BlockCakeBase) {
             currentTip.add(TextFormatting.GRAY + "Bites: " +
                            (MAX_BITES - accessor.getBlockState().getValue(BITES)) + " / " + MAX_BITES);
+            currentTip.add(TextFormatting.GRAY + "Refill: " + fuel);
         }
         return currentTip;
     }
@@ -255,8 +275,8 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                                   EntityPlayer player) {
         EntityPlayerMP playerMP = (EntityPlayerMP) player;
         BlockPos coords;
-        if (config().useCustomCoordinates())
-            coords = config().customCoords().toBlockPos();
+        if (config().useCustomCoordinates(this.cakeDimension()))
+            coords = config().customCoords(this.cakeDimension()).toBlockPos();
         else
             coords = calculateCoordinates(playerMP);
 
@@ -293,8 +313,13 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
      * @return The Fuel as an ItemStack if the Config entry is well-formed,
      *         {@link #defaultFuel} otherwise.
      */
-    private ItemStack getFuelItemStack() {
-        Item configItem = Item.REGISTRY.getObject(new ResourceLocation(config().fuel()));
+    private ItemStack getFuelItemStack(int dim) {
+        String fuel = config().fuel(dim);
+        if (fuel == null || fuel.equals("")) {
+            logger.error("Could not parse fuel for cake (dimension \"{}\"). Falling back to default fuel.", dim);
+            return defaultFuel();
+        }
+        Item configItem = Item.REGISTRY.getObject(new ResourceLocation(fuel));
         return configItem == null ? defaultFuel() : new ItemStack(configItem);
     }
 
@@ -304,5 +329,18 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                              NonNullList<ItemStack> list) {
         if (registerItem())
             list.add(new ItemStack(this));
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+        ItemStack fuelStack = getFuelItemStack(getDimID(stack));
+        if (fuelStack == ItemStack.EMPTY)
+            tooltip.add(I18n.format("tooltip.dimensionaledibles.custom_cake.bad_config"));
+        else
+            // Why do I need to add ".name"? Thank you Lex.
+            tooltip.add(I18n.format("tooltip.dimensionaledibles.cake",
+                    I18n.format(fuelStack.getTranslationKey() + ".name")));
     }
 }
