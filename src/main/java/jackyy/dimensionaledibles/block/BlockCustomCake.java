@@ -2,12 +2,13 @@ package jackyy.dimensionaledibles.block;
 
 import jackyy.dimensionaledibles.*;
 import jackyy.dimensionaledibles.block.tile.*;
+import jackyy.dimensionaledibles.item.*;
 import jackyy.dimensionaledibles.registry.*;
+import jackyy.dimensionaledibles.util.*;
 import net.minecraft.block.*;
 import net.minecraft.block.state.*;
 import net.minecraft.creativetab.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.init.*;
 import net.minecraft.item.*;
 import net.minecraft.nbt.*;
 import net.minecraft.tileentity.*;
@@ -16,7 +17,6 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.*;
 import net.minecraftforge.common.*;
 import net.minecraftforge.fml.relauncher.*;
-import org.apache.logging.log4j.*;
 
 import javax.annotation.*;
 
@@ -24,12 +24,26 @@ import static jackyy.dimensionaledibles.DimensionalEdibles.*;
 
 public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvider {
 
-    private int customX = 0;
-    private int customY = 0;
-    private int customZ = 0;
+    /** Dimension of the last-clicked cake. */
+    private int cakeDimension;
 
-    private String cakeFuel;
-    private int cakeDimension = 0;
+    private static class CustomCake {
+        public ModConfig.CustomCoords customCoords = new ModConfig.CustomCoords(0,0,0);
+        private String cakeFuel = null;
+        private final int cakeDimension;
+
+        public CustomCake(int dim) {
+            this.cakeDimension = dim;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("CustomCake[dim: %d, fuel: %s, coords: %s]",
+                                 cakeDimension, cakeFuel, customCoords);
+        }
+    }
+
+    private static Cache<Integer, CustomCake> cache = new Cache<>();
 
     public BlockCustomCake() {
         super();
@@ -47,9 +61,16 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
                                     float hitX,
                                     float hitY,
                                     float hitZ) {
-        this.cakeDimension = getDimension(world, pos);
-        this.cakeFuel = determineCakeFuel();
-        updateCustomCoordinates();
+
+
+
+        int dim = getDimension(world, pos);
+        if(!cache.containsKey(dim)) {
+            logger.error("No such dimension: \"{}\"", dim);
+            return true;
+        }
+
+        this.cakeDimension = dim;
 
         return super.onBlockActivated(world, pos, state, player, hand, side, hitX, hitY, hitZ);
     }
@@ -62,46 +83,63 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
         throw new IllegalArgumentException("Specified position does not contain a Custom Cake");
     }
 
-    private void updateCustomCoordinates() {
+    /**
+     *  DO NOT CALL THIS METHOD OUTSIDE OF PREINIT AND CONFIG CHANGE EVENT HANDLERS.
+     *  This should be private but Forge forced my hand.
+     */
+    public static void rebuildCache() {
+        Cache<Integer,CustomCake> newCache = new Cache<>();
+
+        NonNullList<ItemStack> subBlocks = NonNullList.create();
+        new BlockCustomCake().getSubBlocks(CreativeTabs.BUILDING_BLOCKS, subBlocks);
+        for(ItemStack stack : subBlocks) {
+            int dimID = ItemBlockCustomCake.getDimID(stack);
+            newCache.putIfAbsent(dimID, new CustomCake(dimID));
+        }
+
         for(String s : ModConfig.tweaks.customEdible.customCoords) {
             try {
                 String[] parts = s.split(",");
                 if (parts.length < 4) {
-                    logger.log(Level.ERROR,
-                               s + " is not a valid input line! Format needs to be: <dimID>, <x>, <y>, <z>");
+                    logger.error("\"{}\" is not a valid input line! Format needs to be: <dimID>, <x>, <y>, <z>", s);
                     continue;
                 }
-                if (Integer.parseInt(parts[0].trim()) == cakeDimension) {
-                    customX = Integer.parseInt(parts[1].trim());
-                    customY = Integer.parseInt(parts[2].trim());
-                    customZ = Integer.parseInt(parts[3].trim());
+                int dim = Integer.parseInt(parts[0].trim());
+                if(!newCache.containsKey(dim)) {
+                    logger.error("Unrecognized dimension: \"{}\"", dim);
+                    return;
                 }
+                CustomCake cake = newCache.get(dim);
+
+                ModConfig.CustomCoords cc = cake.customCoords;
+                cc.x = Integer.parseInt(parts[1].trim());
+                cc.y = Integer.parseInt(parts[2].trim());
+                cc.z = Integer.parseInt(parts[3].trim());
+
             } catch(NumberFormatException e) {
-                logger.log(Level.ERROR,
-                           s + " is not a valid line input! The dimension ID needs to be a number!");
+                logger.error("\"{}\" is not a valid line input! The dimension ID needs to be a number!", s, e);
+                return;
             }
         }
-    }
 
-    private String determineCakeFuel() {
-        String fuel = "minecraft:air";
         for(String s : ModConfig.tweaks.customEdible.customCake.fuel) {
             try {
                 String[] parts = s.split(",");
                 if (parts.length < 2) {
-                    logger.log(Level.ERROR,
-                               s + " is not a valid input line! Format needs to be: <dimID>, <cakeFuel>");
-                    continue;
+                    logger.error("\"{}\" is not a valid input line! Format needs to be: <dimID>, <cakeFuel>", s);
+                    return;
                 }
-                if (Integer.parseInt(parts[0].trim()) == cakeDimension) {
-                    fuel = parts[1].trim();
-                }
+                int dim = Integer.parseInt(parts[0].trim());
+                CustomCake cake = newCache.get(dim);
+
+                cake.cakeFuel = parts[1].trim();
             } catch(NumberFormatException e) {
-                logger.log(Level.ERROR,
-                           s + " is not a valid line input! The dimension ID needs to be a number!");
+                logger.error("\"{}\" is not a valid line input! The dimension ID needs to be a number!", s, e);
+                return;
             }
         }
-        return fuel;
+
+        cache = newCache;
     }
 
     @Override
@@ -114,8 +152,7 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
                 try {
                     String[] parts = s.split(",");
                     if (parts.length < 2) {
-                        logger.log(Level.ERROR,
-                                   s + " is not a valid input line! Format needs to be: <dimID>, <cakeName>");
+                        logger.error("\"{}\" is not a valid input line! Format needs to be: <dimID>, <cakeName>", s);
                         continue;
                     }
                     int dimension = Integer.parseInt(parts[0].trim());
@@ -130,12 +167,10 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
                         nbt.setString("cakeName", parts[1].trim());
                         list.add(stack);
                     } else {
-                        logger.log(Level.ERROR,
-                                   parts[0] + " is not a valid dimension ID! (Needs to be a number)");
+                        logger.error("\"{}\" is not a valid dimension ID!", parts[0]);
                     }
                 } catch(NumberFormatException e) {
-                    logger.log(Level.ERROR,
-                               s + " is not a valid line input! The dimension ID needs to be a number!");
+                    logger.error("\"{}\" is not a valid line input! The dimension ID needs to be a number!", s, e);
                 }
             }
         }
@@ -149,11 +184,23 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
 
     private final ModConfig.CakeConfig conf = new ModConfig.CakeConfig() {
         @Override
-        public String fuel() { return cakeFuel; }
+        public String fuel(int dim) {
+            return cache.getPropertyIfPresentOrNull(dim, c -> c.cakeFuel);
+        }
+
         @Override
-        public boolean useCustomCoordinates() { return (customX != 0 || customY != 0 || customZ != 0); }
+        public boolean useCustomCoordinates(int dim) {
+            return cache.getPropertyIfPresentOrElse(dim, c -> {
+                ModConfig.CustomCoords cc = c.customCoords;
+                return (cc.x != 0 || cc.y != 0 || cc.z != 0);
+            }, () -> false);
+        }
+
         @Override
-        public ModConfig.CustomCoords customCoords() { return new ModConfig.CustomCoords(customX, customY, customZ); }
+        public ModConfig.CustomCoords customCoords(int dim) {
+            return cache.getPropertyIfPresentOrElse(dim, c -> c.customCoords, () -> new CustomCake(dim).customCoords);
+        }
+
         @Override
         public boolean consumesFuel() { return ModConfig.tweaks.customEdible.customCake.consumeFuel; }
         @Override

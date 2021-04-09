@@ -2,6 +2,7 @@ package jackyy.dimensionaledibles.item;
 
 import jackyy.dimensionaledibles.block.tile.TileDimensionCake;
 import jackyy.dimensionaledibles.registry.ModBlocks;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -13,6 +14,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class ItemBlockCustomCake extends ItemBlock {
 
     public ItemBlockCustomCake() {
@@ -53,7 +58,7 @@ public class ItemBlockCustomCake extends ItemBlock {
         return nbt.getString("cakeName");
     }
 
-    public int getDimID(ItemStack stack) {
+    public static int getDimID(ItemStack stack) {
         NBTTagCompound nbt = stack.getTagCompound();
         if (nbt == null || !nbt.hasKey("dimID")) {
             return 0;
