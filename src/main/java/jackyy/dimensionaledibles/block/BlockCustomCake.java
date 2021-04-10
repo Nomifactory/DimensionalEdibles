@@ -21,8 +21,8 @@ import org.apache.logging.log4j.message.*;
 
 import javax.annotation.*;
 
-import static jackyy.dimensionaledibles.DimensionalEdibles.*;
-import static net.minecraftforge.common.DimensionManager.*;
+import static jackyy.dimensionaledibles.DimensionalEdibles.logger;
+import static net.minecraftforge.common.DimensionManager.isDimensionRegistered;
 
 public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvider {
 
