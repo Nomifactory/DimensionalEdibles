@@ -16,7 +16,6 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.util.text.*;
 import net.minecraft.world.*;
-import net.minecraftforge.fml.relauncher.*;
 import org.apache.logging.log4j.message.*;
 
 import javax.annotation.*;
@@ -149,7 +148,6 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void getSubBlocks(CreativeTabs tab,
                              NonNullList<ItemStack> list) {
         if (registerItem()) {
