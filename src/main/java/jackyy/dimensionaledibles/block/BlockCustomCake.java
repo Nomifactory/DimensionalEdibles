@@ -15,12 +15,12 @@ import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.world.*;
-import net.minecraftforge.common.*;
 import net.minecraftforge.fml.relauncher.*;
 
 import javax.annotation.*;
 
 import static jackyy.dimensionaledibles.DimensionalEdibles.*;
+import static net.minecraftforge.common.DimensionManager.isDimensionRegistered;
 
 public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvider {
 
@@ -62,11 +62,9 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
                                     float hitY,
                                     float hitZ) {
 
-
-
         int dim = getDimension(world, pos);
-        if(!cache.containsKey(dim)) {
-            logger.error("No such dimension: \"{}\"", dim);
+        if(!isDimensionRegistered(dim)) {
+            logger.error("Requested dimension: \"{}\" does not exist. Please verify your configs.", dim);
             return true;
         }
 
@@ -156,19 +154,18 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
                         continue;
                     }
                     int dimension = Integer.parseInt(parts[0].trim());
-                    if (DimensionManager.isDimensionRegistered(dimension)) {
-                        stack = new ItemStack(this);
-                        NBTTagCompound nbt = stack.getTagCompound();
-                        if (nbt == null) {
-                            nbt = new NBTTagCompound();
-                            stack.setTagCompound(nbt);
-                        }
-                        nbt.setInteger("dimID", dimension);
-                        nbt.setString("cakeName", parts[1].trim());
-                        list.add(stack);
-                    } else {
-                        logger.error("\"{}\" is not a valid dimension ID!", parts[0]);
+
+                    // Always register the requested cakes; JED dimensions may not be loaded yet
+                    stack = new ItemStack(this);
+                    NBTTagCompound nbt = stack.getTagCompound();
+                    if (nbt == null) {
+                        nbt = new NBTTagCompound();
+                        stack.setTagCompound(nbt);
                     }
+                    nbt.setInteger("dimID", dimension);
+                    nbt.setString("cakeName", parts[1].trim());
+                    list.add(stack);
+
                 } catch(NumberFormatException e) {
                     logger.error("\"{}\" is not a valid line input! The dimension ID needs to be a number!", s, e);
                 }
