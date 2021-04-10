@@ -14,13 +14,15 @@ import net.minecraft.nbt.*;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
+import net.minecraft.util.text.*;
 import net.minecraft.world.*;
 import net.minecraftforge.fml.relauncher.*;
+import org.apache.logging.log4j.message.*;
 
 import javax.annotation.*;
 
 import static jackyy.dimensionaledibles.DimensionalEdibles.*;
-import static net.minecraftforge.common.DimensionManager.isDimensionRegistered;
+import static net.minecraftforge.common.DimensionManager.*;
 
 public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvider {
 
@@ -63,8 +65,14 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
                                     float hitZ) {
 
         int dim = getDimension(world, pos);
-        if(!isDimensionRegistered(dim)) {
-            logger.error("Requested dimension: \"{}\" does not exist. Please verify your configs.", dim);
+        if (!isDimensionRegistered(dim)) {
+            Message message = new FormattedMessage(
+                "Requested dimension: \"{}\" does not exist. Please verify your configs.",
+                dim);
+            if (!world.isRemote)
+                logger.error(message);
+            else
+                player.sendMessage(new TextComponentString(message.getFormattedMessage()));
             return true;
         }
 
