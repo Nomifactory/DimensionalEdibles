@@ -11,10 +11,17 @@ import groovyx.net.http.Method
 buildscript {
     repositories {
         mavenCentral()
-        maven { url = "http://files.minecraftforge.net/maven" }
+        maven {
+            name = "Forge"
+            url = "https://maven.minecraftforge.net/"
+        }
+        maven {
+            name = "jitpack"
+            url = "https://jitpack.io"
+        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath "com.github.GregTechCE:ForgeGradle:FG_2.3-SNAPSHOT"
         classpath "org.codehaus.groovy.modules.http-builder:http-builder:0.7"
         classpath "org.apache.httpcomponents:httpmime:4.5.1"
     }
@@ -43,7 +50,7 @@ minecraft {
 repositories {
     maven {
         name = "JEI Maven"
-        url "http://dvs1.progwml6.com/files/maven"
+        url "https://dvs1.progwml6.com/files/maven"
     }
     maven {
         name = "Hwyla Maven"
