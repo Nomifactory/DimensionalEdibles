@@ -5,6 +5,8 @@ import jackyy.dimensionaledibles.block.tile.*;
 import jackyy.dimensionaledibles.item.*;
 import jackyy.dimensionaledibles.registry.*;
 import jackyy.dimensionaledibles.util.*;
+import mcjty.theoneprobe.api.*;
+import mcp.mobius.waila.api.*;
 import net.minecraft.block.*;
 import net.minecraft.block.state.*;
 import net.minecraft.creativetab.*;
@@ -20,8 +22,10 @@ import org.apache.logging.log4j.message.*;
 
 import javax.annotation.*;
 
-import static jackyy.dimensionaledibles.DimensionalEdibles.logger;
-import static net.minecraftforge.common.DimensionManager.isDimensionRegistered;
+import java.util.*;
+
+import static jackyy.dimensionaledibles.DimensionalEdibles.*;
+import static net.minecraftforge.common.DimensionManager.*;
 
 public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvider {
 
@@ -222,4 +226,36 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
     @Override
     @Nonnull
     public ItemStack defaultFuel() { return ItemStack.EMPTY; }
+
+    /*
+        These overrides work around the bug causing log spam in tooltips when
+        looking at a cake. We should still consider splitting up custom cakes
+        into separate objects per dimension as hot-swapping state is brittle.
+     */
+    @Override
+    public void addProbeInfo(ProbeMode mode,
+                             IProbeInfo probeInfo,
+                             EntityPlayer player,
+                             World world,
+                             IBlockState blockState,
+                             IProbeHitData data) {
+
+        int dim = getDimension(world, data.getPos());
+        if(!isDimensionRegistered(dim))
+            return;
+        this.cakeDimension = dim;
+        super.addProbeInfo(mode, probeInfo, player, world, blockState, data);
+    }
+
+    @Override
+    public List<String> getWailaBody(ItemStack itemStack,
+                                     List<String> currentTip,
+                                     IWailaDataAccessor accessor,
+                                     IWailaConfigHandler config) {
+        int dim = getDimension(accessor.getWorld(), accessor.getPosition());
+        if(!isDimensionRegistered(dim))
+            return Collections.emptyList();
+        this.cakeDimension = dim;
+        return super.getWailaBody(itemStack, currentTip, accessor, config);
+    }
 }
