@@ -239,11 +239,7 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
                              World world,
                              IBlockState blockState,
                              IProbeHitData data) {
-
-        int dim = getDimension(world, data.getPos());
-        if(!isDimensionRegistered(dim))
-            return;
-        this.cakeDimension = dim;
+        this.cakeDimension = getDimension(world, data.getPos());
         super.addProbeInfo(mode, probeInfo, player, world, blockState, data);
     }
 
@@ -252,10 +248,7 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
                                      List<String> currentTip,
                                      IWailaDataAccessor accessor,
                                      IWailaConfigHandler config) {
-        int dim = getDimension(accessor.getWorld(), accessor.getPosition());
-        if(!isDimensionRegistered(dim))
-            return Collections.emptyList();
-        this.cakeDimension = dim;
+        this.cakeDimension = getDimension(accessor.getWorld(), accessor.getPosition());
         return super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 }
