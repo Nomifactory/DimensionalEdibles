@@ -5,6 +5,8 @@ import jackyy.dimensionaledibles.block.tile.*;
 import jackyy.dimensionaledibles.item.*;
 import jackyy.dimensionaledibles.registry.*;
 import jackyy.dimensionaledibles.util.*;
+import mcjty.theoneprobe.api.*;
+import mcp.mobius.waila.api.*;
 import net.minecraft.block.*;
 import net.minecraft.block.state.*;
 import net.minecraft.creativetab.*;
@@ -19,6 +21,8 @@ import net.minecraft.world.*;
 import org.apache.logging.log4j.message.*;
 
 import javax.annotation.*;
+
+import java.util.*;
 
 import static jackyy.dimensionaledibles.DimensionalEdibles.logger;
 import static net.minecraftforge.common.DimensionManager.isDimensionRegistered;
@@ -222,4 +226,29 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
     @Override
     @Nonnull
     public ItemStack defaultFuel() { return ItemStack.EMPTY; }
+
+    /*
+        These overrides work around the bug causing log spam in tooltips when
+        looking at a cake. We should still consider splitting up custom cakes
+        into separate objects per dimension as hot-swapping state is brittle.
+     */
+    @Override
+    public void addProbeInfo(ProbeMode mode,
+                             IProbeInfo probeInfo,
+                             EntityPlayer player,
+                             World world,
+                             IBlockState blockState,
+                             IProbeHitData data) {
+        this.cakeDimension = getDimension(world, data.getPos());
+        super.addProbeInfo(mode, probeInfo, player, world, blockState, data);
+    }
+
+    @Override
+    public List<String> getWailaBody(ItemStack itemStack,
+                                     List<String> currentTip,
+                                     IWailaDataAccessor accessor,
+                                     IWailaConfigHandler config) {
+        this.cakeDimension = getDimension(accessor.getWorld(), accessor.getPosition());
+        return super.getWailaBody(itemStack, currentTip, accessor, config);
+    }
 }
