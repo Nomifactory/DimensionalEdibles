@@ -1,17 +1,17 @@
-# DimensionalEdibles: Omnifactory Edition
-[![Downloads](http://cf.way2muchnoise.eu/full_dimensional-edibles-omnifactory-edition_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/dimensional-edibles-omnifactory-edition) [![MCVersion](http://cf.way2muchnoise.eu/versions/dimensional-edibles-omnifactory-edition.svg)](https://www.curseforge.com/minecraft/mc-mods/dimensional-edibles-omnifactory-edition)
+# DimensionalEdibles: Nomifactory Edition
+[![Downloads](http://cf.way2muchnoise.eu/full_431982_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/dimensional-edibles-nomifactory-edition) [![MCVersion](http://cf.way2muchnoise.eu/versions/431982.svg)](https://www.curseforge.com/minecraft/mc-mods/dimensional-edibles-nomifactory-edition)
 
-[![GitHub issues](https://img.shields.io/github/issues/OmnifactoryDevs/DimensionalEdibles.svg)](https://github.com/OmnifactoryDevs/DimensionalEdibles/issues) [![GitHub pull requests](https://img.shields.io/github/issues-pr/OmnifactoryDevs/DimensionalEdibles.svg)](https://github.com/OmnifactoryDevs/DimensionalEdibles/pulls) [![license](https://img.shields.io/github/license/OmnifactoryDevs/DimensionalEdibles.svg)](../dev-1.12.2/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/Nomifactory/DimensionalEdibles.svg)](https://github.com/Nomifactory/DimensionalEdibles/issues) [![GitHub pull requests](https://img.shields.io/github/issues-pr/Nomifactory/DimensionalEdibles.svg)](https://github.com/Nomifactory/DimensionalEdibles/pulls) [![license](https://img.shields.io/github/license/Nomifactory/DimensionalEdibles.svg)](../dev-1.12.2/LICENSE)
 
 ---
 
 ## About
 
-This is the GitHub repo for the Dimensional Edibles: Omnifactory Edition Minecraft mod, where the source code and issue tracker are in here.
+This is the GitHub repo for the Dimensional Edibles: Nomifactory Edition Minecraft mod, where the source code and issue tracker are in here.
 
-Submit any bug reports / suggestions via [issue tracker](https://github.com/OmnifactoryDevs/DimensionalEdibles/issues).
+Submit any bug reports / suggestions via [issue tracker](https://github.com/Nomifactory/DimensionalEdibles/issues).
 
-[Pull requests](https://github.com/OmnifactoryDevs/DimensionalEdibles/pulls) are welcome if you would like to add features / help with bug fixes or translations.
+[Pull requests](https://github.com/Nomifactory/DimensionalEdibles/pulls) are welcome if you would like to add features / help with bug fixes or translations.
 
 ---
 
@@ -20,8 +20,8 @@ Submit any bug reports / suggestions via [issue tracker](https://github.com/Omni
 If you would like to set up the workspace yourself to submit PRs of features additions or bug fixes, or compile the mod, here's how you do it.
 
 1. Clone the mod.
-    - HTTPS: `git clone https://github.com/OmnifactoryDevs/DimensionalEdibles.git`
-    - SSH: `git clone git@github.com:OmnifactoryDevs/DimensionalEdibles.git`
+    - HTTPS: `git clone https://github.com/Nomifactory/DimensionalEdibles.git`
+    - SSH: `git clone git@github.com:Nomifactory/DimensionalEdibles.git`
     - Or, use the GitHub desktop app to clone the repo via GUI interface.
 
 2. Setting up the workspace, depending on what you need.
