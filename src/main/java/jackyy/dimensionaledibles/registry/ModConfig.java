@@ -107,6 +107,8 @@ public class ModConfig {
         public OverworldCake overworldCake = new OverworldCake();
         @Config.Comment("The category for dealing with the Overworld Apple")
         public OverworldApple overworldApple = new OverworldApple();
+        @Config.Comment("The category for dealing with the Island Cake")
+        public IslandCake islandCake = new IslandCake();
         @Config.Comment("The category for defining and modifying a Custom Cake")
         public CustomEdible customEdible = new CustomEdible();
         @Config.Comment("Set to true to disable the activation of vanilla End Portal.")
@@ -201,6 +203,16 @@ public class ModConfig {
             public boolean useCustomCoords = false;
             @Config.Comment("Define the custom spawn coordinates")
             public CustomCoords customCoords = new CustomCoords();
+        }
+
+        public static class IslandCake {
+            @Config.Comment("The Y-level that the island cake will teleport to")
+            @Config.RangeInt(min = 0, max = 256)
+            public int yLevel = 0;
+
+            @Config.Comment("The gap between two islands in regions")
+            @Config.RangeInt(min = 2, max = 100)
+            public int islandGapRegions = 2;
         }
 
         public static class CustomEdible {
