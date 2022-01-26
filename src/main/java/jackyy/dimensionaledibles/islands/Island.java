@@ -37,6 +37,10 @@ public class Island implements INBTSerializable<NBTTagCompound> {
         this.owningTeam = owningTeam;
     }
 
+    public BlockPos getTeleportLocation() {
+        return teleportLocation;
+    }
+
     @Override
     public NBTTagCompound serializeNBT() {
         NBTTagCompound nbt = new NBTTagCompound();
