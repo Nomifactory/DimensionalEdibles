@@ -47,6 +47,15 @@ minecraft {
     replaceIn "DimensionalEdibles.java"
 }
 
+
+
+runClient {
+    args "--username=TestUser3"
+}
+
+
+
+
 repositories {
     maven {
         name = "JEI Maven"
@@ -60,12 +69,17 @@ repositories {
         name = "TOP Maven"
         url = "http://maven.tterrag.com"
     }
+    maven {
+        name = "FTBLib"
+        url "https://maven.latmod.com/"
+    }
 }
 
 dependencies {
     deobfCompile "mezz.jei:jei_1.12.2:+"
     deobfCompile "mcp.mobius.waila:Hwyla:1.8.26-B41_1.12.2"
     deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.+"
+    deobfCompile "com.feed_the_beast.mods:FTBLib:${ftblib_version}"
 
     testImplementation "junit:junit:4.13.1"
     testImplementation "org.hamcrest:hamcrest:2.2"
