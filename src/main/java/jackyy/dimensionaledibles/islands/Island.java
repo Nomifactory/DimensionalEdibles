@@ -21,6 +21,10 @@ public class Island implements INBTSerializable<NBTTagCompound> {
         this.teleportLocation = teleportLocation;
     }
 
+    public UUID getUuid() {
+        return uuid;
+    }
+
     public UUID getOwningPlayer() {
         return owningPlayer;
     }

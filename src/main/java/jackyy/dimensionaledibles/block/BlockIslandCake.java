@@ -96,8 +96,7 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
                         teleportPlayer(worldIn, playerIn, island.getTeleportLocation());
                     }
                 }
-            }
-
+        }
             // has to return true for both server and client
             return true;
         }

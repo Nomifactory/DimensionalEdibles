@@ -2,11 +2,12 @@ package jackyy.dimensionaledibles.block.tile;
 
 import jackyy.dimensionaledibles.registry.ModConfig;
 import net.minecraft.nbt.NBTTagCompound;
+
 import java.util.UUID;
 
 public class TileIslandCake extends TileDimensionCake {
 
-    public TileIslandCake(){
+    public TileIslandCake() {
         super(ModConfig.tweaks.islandCake.islandDimension, "Island");
     }
 
@@ -25,7 +26,8 @@ public class TileIslandCake extends TileDimensionCake {
     public UUID getOwner() {
         return owner;
     }
-    public void setOwner(UUID uuid){
+
+    public void setOwner(UUID uuid) {
         this.owner = uuid;
     }
 
@@ -34,7 +36,7 @@ public class TileIslandCake extends TileDimensionCake {
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         nbt.setBoolean("isPersonalCake", isPersonalCake());
-        if (owner != null){
+        if (owner != null) {
             nbt.setUniqueId("owner", getOwner());
         }
 

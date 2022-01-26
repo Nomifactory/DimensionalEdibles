@@ -47,15 +47,6 @@ minecraft {
     replaceIn "DimensionalEdibles.java"
 }
 
-
-
-runClient {
-    args "--username=TestUser3"
-}
-
-
-
-
 repositories {
     maven {
         name = "JEI Maven"
