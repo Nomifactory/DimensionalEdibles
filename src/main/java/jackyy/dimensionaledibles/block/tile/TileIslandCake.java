@@ -11,7 +11,6 @@ public class TileIslandCake extends TileDimensionCake {
         super(ModConfig.tweaks.islandCake.islandDimension, "Island");
     }
 
-
     public boolean isPersonalCake() {
         return isPersonalCake;
     }

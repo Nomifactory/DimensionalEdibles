@@ -28,9 +28,9 @@ public class CommonProxy {
         if (Loader.isModLoaded("waila")) {
             WailaCompat.register();
         }
-        if (Loader.isModLoaded("ftblib")){
-            DimensionalEdibles.isFTBLibsRunning = true;
-        }
+
+        DimensionalEdibles.isFTBLibsRunning = Loader.isModLoaded("ftblib");
+
         MinecraftForge.EVENT_BUS.register(new ModEvents());
     }
 

@@ -1,7 +1,9 @@
 package jackyy.dimensionaledibles.proxy;
 
 import jackyy.dimensionaledibles.block.tile.TileDimensionCake;
-import jackyy.dimensionaledibles.client.TileCustomCakeRenderer;
+import jackyy.dimensionaledibles.block.tile.TileIslandCake;
+import jackyy.dimensionaledibles.client.render.TileCustomCakeRenderer;
+import jackyy.dimensionaledibles.client.render.TileIslandCakeRenderer;
 import jackyy.dimensionaledibles.registry.ModBlocks;
 import jackyy.dimensionaledibles.registry.ModItems;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -28,6 +30,7 @@ public class ClientProxy extends CommonProxy {
     public void init(FMLInitializationEvent event) {
         super.init(event);
         ClientRegistry.bindTileEntitySpecialRenderer(TileDimensionCake.class, TileCustomCakeRenderer.INSTANCE);
+        ClientRegistry.bindTileEntitySpecialRenderer(TileIslandCake.class, new TileIslandCakeRenderer());
     }
 
     public void postInit(FMLPostInitializationEvent event) {

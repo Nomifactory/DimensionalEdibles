@@ -1,4 +1,4 @@
-package jackyy.dimensionaledibles.client;
+package jackyy.dimensionaledibles.client.render;
 
 import jackyy.dimensionaledibles.block.tile.TileDimensionCake;
 import net.minecraft.client.Minecraft;
