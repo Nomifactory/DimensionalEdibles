@@ -39,6 +39,12 @@ public class ModItems {
                         return EnumRarity.EPIC;
                     }
                 }.setRegistryName(ModBlocks.overworldCake.getRegistryName()),
+                new ItemBlock(ModBlocks.islandCake) {
+                    @Override
+                    public EnumRarity getRarity(ItemStack stack) {
+                        return EnumRarity.EPIC;
+                    }
+                }.setRegistryName(ModBlocks.islandCake.getRegistryName()),
                 customCake, enderApple, netherApple, overworldApple, customApple);
     }
 

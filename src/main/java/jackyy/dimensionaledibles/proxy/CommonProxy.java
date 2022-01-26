@@ -1,5 +1,6 @@
 package jackyy.dimensionaledibles.proxy;
 
+import jackyy.dimensionaledibles.DimensionalEdibles;
 import jackyy.dimensionaledibles.compat.TOPCompat;
 import jackyy.dimensionaledibles.compat.WailaCompat;
 import jackyy.dimensionaledibles.registry.ModBlocks;
@@ -26,6 +27,9 @@ public class CommonProxy {
         }
         if (Loader.isModLoaded("waila")) {
             WailaCompat.register();
+        }
+        if (Loader.isModLoaded("ftblib")){
+            DimensionalEdibles.isFTBLibsRunning = true;
         }
         MinecraftForge.EVENT_BUS.register(new ModEvents());
     }

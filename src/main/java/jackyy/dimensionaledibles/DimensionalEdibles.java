@@ -33,6 +33,8 @@ public class DimensionalEdibles {
     };
     public static Logger logger = LogManager.getLogger(MODNAME);
 
+    public static boolean isFTBLibsRunning = false;
+
     @SidedProxy(serverSide = "jackyy.dimensionaledibles.proxy.CommonProxy", clientSide = "jackyy.dimensionaledibles.proxy.ClientProxy")
     public static CommonProxy proxy;
 
