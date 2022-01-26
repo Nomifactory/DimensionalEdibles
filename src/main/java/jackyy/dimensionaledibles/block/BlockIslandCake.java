@@ -15,6 +15,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
@@ -52,7 +53,7 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
         TileIslandCake tile = (TileIslandCake) world.getTileEntity(pos);
         if (tile != null) {
 
-            if (tile.isPersonalCake) {
+            if (tile.isPersonalCake()) {
                 drops.add(
                         new ItemStack(
                                 Item.REGISTRY.getObject(
@@ -84,10 +85,10 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
             return true;
         }
 
-        Island island = getIsland(worldIn, playerIn, pos);
 
         if (worldIn.provider.getDimension() != this.cakeDimension()) {
-            if (!worldIn.isRemote)
+            if (!worldIn.isRemote) {
+                Island island = getIsland(worldIn, playerIn, pos);
                 if (playerIn.capabilities.isCreativeMode || !config().consumesFuel())
                     teleportPlayer(worldIn, playerIn, island.getTeleportLocation());
                 else {
@@ -95,6 +96,7 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
                         teleportPlayer(worldIn, playerIn, island.getTeleportLocation());
                     }
                 }
+            }
 
             // has to return true for both server and client
             return true;
@@ -139,7 +141,7 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
         UUID uuid = playerIn.getUniqueID();
         IslandManager im = IslandManager.forWorld(worldIn);
         Island island;
-        
+
         TileIslandCake tic = (TileIslandCake) worldIn.getTileEntity(pos);
 
         if (DimensionalEdibles.isFTBLibsRunning) {
