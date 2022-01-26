@@ -139,7 +139,7 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
         UUID uuid = playerIn.getUniqueID();
         IslandManager im = IslandManager.forWorld(worldIn);
         Island island;
-        
+
         TileIslandCake tic = (TileIslandCake) worldIn.getTileEntity(pos);
 
         if (DimensionalEdibles.isFTBLibsRunning) {
