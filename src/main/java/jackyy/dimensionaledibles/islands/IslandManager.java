@@ -9,11 +9,13 @@ import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.UUID;
 
 import static jackyy.dimensionaledibles.DimensionalEdibles.MODID;
+import static jackyy.dimensionaledibles.DimensionalEdibles.logger;
 
 public class IslandManager {
     private static final HashMap<World, IslandManager> MANAGERS = new HashMap<>();
@@ -55,7 +57,7 @@ public class IslandManager {
     }
 
     public static class IslandsWorldSavedData extends WorldSavedData {
-        private static final int LIST_TYPE = 9;
+        private static final int COMPOUND_TYPE = 10;
         private static final String DATA_NAME = MODID + "_IslandData";
         private final HashMap<UUID, Island> islands = new HashMap<>();
         private int index = 0;
@@ -82,7 +84,7 @@ public class IslandManager {
 
         @Nullable
         public Island getByOwningPlayer(UUID id) {
-            return islands.values().stream().filter(i -> i.getOwningPlayer() == id).findFirst().orElse(null);
+            return islands.values().stream().filter(i -> i.getOwningPlayer().equals(id)).findFirst().orElse(null);
         }
 
         @Nullable
@@ -94,7 +96,7 @@ public class IslandManager {
             BlockPos teleport = Util.islandTeleportLocation(index);
             Island island = new Island(index++, teleport);
             island.setOwningPlayer(id);
-            islands.put(id, island);
+            islands.put(island.getUuid(), island);
             this.markDirty();
             return island;
         }
@@ -112,12 +114,11 @@ public class IslandManager {
         public void readFromNBT(NBTTagCompound nbt) {
             index = nbt.getInteger("index");
             islands.clear();
-            NBTTagList list = nbt.getTagList("islands", LIST_TYPE);
+            NBTTagList list = nbt.getTagList("islands", COMPOUND_TYPE);
             for (NBTBase i : list) {
-                UUID uuid = ((NBTTagCompound) i).getUniqueId("uuid");
                 Island island = new Island();
-                island.deserializeNBT(((NBTTagCompound) i).getCompoundTag("island"));
-                islands.put(uuid, island);
+                island.deserializeNBT((NBTTagCompound) i);
+                islands.put(island.getUuid(), island);
             }
         }
 
@@ -125,12 +126,8 @@ public class IslandManager {
         public NBTTagCompound writeToNBT(NBTTagCompound compound) {
             compound.setInteger("index", index);
             NBTTagList islandList = new NBTTagList();
-            for (Map.Entry<UUID, Island> e : islands.entrySet()) {
-                NBTTagCompound tag = new NBTTagCompound();
-                tag.setUniqueId("uuid", e.getKey());
-                tag.setTag("island", e.getValue().serializeNBT());
-
-                islandList.appendTag(tag);
+            for (Island island : islands.values()) {
+                islandList.appendTag(island.serializeNBT());
             }
             compound.setTag("islands", islandList);
             return compound;

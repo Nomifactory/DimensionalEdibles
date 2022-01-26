@@ -84,10 +84,10 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
             return true;
         }
 
-        Island island = getIsland(worldIn, playerIn, pos);
 
         if (worldIn.provider.getDimension() != this.cakeDimension()) {
-            if (!worldIn.isRemote)
+            if (!worldIn.isRemote) {
+                Island island = getIsland(worldIn, playerIn, pos);
                 if (playerIn.capabilities.isCreativeMode || !config().consumesFuel())
                     teleportPlayer(worldIn, playerIn, island.getTeleportLocation());
                 else {
@@ -95,7 +95,7 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
                         teleportPlayer(worldIn, playerIn, island.getTeleportLocation());
                     }
                 }
-
+        }
             // has to return true for both server and client
             return true;
         }
