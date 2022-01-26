@@ -3,6 +3,7 @@ package jackyy.dimensionaledibles.registry;
 import jackyy.dimensionaledibles.DimensionalEdibles;
 import jackyy.dimensionaledibles.block.*;
 import jackyy.dimensionaledibles.block.tile.TileDimensionCake;
+import jackyy.dimensionaledibles.block.tile.TileIslandCake;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -24,6 +25,7 @@ public class ModBlocks {
     public static void init(RegistryEvent.Register<Block> event) {
         event.getRegistry().registerAll(endCake, netherCake, overworldCake, islandCake, customCake);
         GameRegistry.registerTileEntity(TileDimensionCake.class, new ResourceLocation(DimensionalEdibles.MODID, "tile_dimension_cake"));
+        GameRegistry.registerTileEntity(TileIslandCake.class, new ResourceLocation(DimensionalEdibles.MODID, "tile_island_cake"));
     }
 
     @SideOnly(Side.CLIENT)

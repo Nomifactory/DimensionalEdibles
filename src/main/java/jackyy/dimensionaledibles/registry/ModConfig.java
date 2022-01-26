@@ -7,9 +7,6 @@ import net.minecraftforge.common.config.*;
 import net.minecraftforge.fml.client.event.*;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.eventhandler.*;
-import scala.Int;
-
-import java.util.ArrayList;
 
 @Config(modid = DimensionalEdibles.MODID, name = "DimensionalEdibles", category = DimensionalEdibles.MODID)
 public class ModConfig {
@@ -235,7 +232,7 @@ public class ModConfig {
             public boolean allowPersonalIslands = true;
 
             @Config.Comment("The item that when used on an island cake turns it into a personal island cake")
-            public String personalConversionItem = "minecraft:diamond";
+            public String personalLockingItem = "minecraft:diamond";
 
             @Config.Comment("The dimension islands will be created in (dimension has to already exist)")
             public Integer islandDimension = -2;

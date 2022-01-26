@@ -7,6 +7,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -95,6 +97,7 @@ public class IslandManager {
             BlockPos teleport = Util.islandTeleportLocation(index);
             Island island = new Island(index++, teleport);
             island.setOwningPlayer(id);
+            islands.put(id, island);
             this.markDirty();
             return island;
         }
