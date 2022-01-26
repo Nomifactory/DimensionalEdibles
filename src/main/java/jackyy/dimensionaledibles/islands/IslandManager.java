@@ -7,8 +7,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -56,11 +54,10 @@ public class IslandManager {
         return island;
     }
 
-    private static class IslandsWorldSavedData extends WorldSavedData {
+    public static class IslandsWorldSavedData extends WorldSavedData {
         private static final int LIST_TYPE = 9;
         private static final String DATA_NAME = MODID + "_IslandData";
         private final HashMap<UUID, Island> islands = new HashMap<>();
-        private final HashMap<Short, UUID> teamMapping = new HashMap<>();
         private int index = 0;
 
         public IslandsWorldSavedData() {
@@ -106,9 +103,7 @@ public class IslandManager {
             BlockPos teleport = Util.islandTeleportLocation(index);
             Island island = new Island(index++, teleport);
             island.setOwningTeam(id);
-            UUID teamUUID = UUID.randomUUID();
-            teamMapping.put(id, teamUUID);
-            islands.put(teamUUID, island);
+            islands.put(island.getUuid(), island);
             this.markDirty();
             return island;
         }
@@ -124,14 +119,6 @@ public class IslandManager {
                 island.deserializeNBT(((NBTTagCompound) i).getCompoundTag("island"));
                 islands.put(uuid, island);
             }
-
-            list = nbt.getTagList("teamMappings", LIST_TYPE);
-            for (NBTBase i : list) {
-                Short id = ((NBTTagCompound) i).getShort("id");
-                UUID uuid = ((NBTTagCompound) i).getUniqueId("uuid");
-
-                teamMapping.put(id, uuid);
-            }
         }
 
         @Override
@@ -146,16 +133,6 @@ public class IslandManager {
                 islandList.appendTag(tag);
             }
             compound.setTag("islands", islandList);
-
-            NBTTagList teamMappings = new NBTTagList();
-            for (Map.Entry<Short, UUID> e : teamMapping.entrySet()) {
-                NBTTagCompound tag = new NBTTagCompound();
-                tag.setShort("id", e.getKey());
-                tag.setUniqueId("uuid", e.getValue());
-
-                teamMappings.appendTag(tag);
-            }
-            compound.setTag("teamMappings", teamMappings);
             return compound;
         }
     }
