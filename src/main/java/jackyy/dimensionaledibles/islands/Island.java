@@ -47,7 +47,11 @@ public class Island implements INBTSerializable<NBTTagCompound> {
         nbt.setUniqueId("uuid", uuid);
         nbt.setInteger("index", index);
         nbt.setLong("teleportLocation", teleportLocation.toLong());
-        nbt.setUniqueId("owningPlayer", owningPlayer);
+
+        if (owningPlayer != null) { // fix NPE on save
+            nbt.setUniqueId("owningPlayer", owningPlayer);
+        }
+
         nbt.setShort("owningTeam", owningTeam);
         return nbt;
     }
@@ -57,6 +61,7 @@ public class Island implements INBTSerializable<NBTTagCompound> {
         uuid = nbt.getUniqueId("uuid");
         index = nbt.getInteger("index");
         teleportLocation = BlockPos.fromLong(nbt.getLong("teleportLocation"));
+        // null chunk not needed since it is a nullable method
         owningPlayer = nbt.getUniqueId("owningPlayer");
         owningTeam = nbt.getShort("owningTeam");
     }
