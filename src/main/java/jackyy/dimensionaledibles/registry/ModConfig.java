@@ -237,32 +237,11 @@ public class ModConfig {
             @Config.Comment("The dimension islands will be created in (dimension has to already exist)")
             public Integer islandDimension = -2;
 
-
-
-            @Override
-            public String fuel(int dim) {
-                return fuel;
-            }
-
-            @Override
-            public boolean preFueled() {
-                return preFueled;
-            }
-
-            @Override
-            public boolean consumesFuel() {
-                return consumesFuel;
-            }
-
-            @Override
-            public boolean useCustomCoordinates(int dim) {
-                return false;
-            }
-
-            @Override
-            public CustomCoords customCoords(int dim) {
-                return null;
-            }
+            public String fuel(int dim) { return fuel; }
+            public boolean preFueled() { return preFueled; }
+            public boolean consumesFuel() { return consumesFuel; }
+            public boolean useCustomCoordinates(int dim) { return false; }
+            public CustomCoords customCoords(int dim) { return null; }
         }
 
         public static class CustomEdible {
