@@ -2,7 +2,6 @@ package jackyy.dimensionaledibles.block;
 
 import com.feed_the_beast.ftblib.lib.data.FTBLibAPI;
 import jackyy.dimensionaledibles.DimensionalEdibles;
-import jackyy.dimensionaledibles.block.tile.TileDimensionCake;
 import jackyy.dimensionaledibles.block.tile.TileIslandCake;
 import jackyy.dimensionaledibles.islands.Island;
 import jackyy.dimensionaledibles.islands.IslandManager;
@@ -13,19 +12,19 @@ import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
@@ -41,6 +40,7 @@ import static jackyy.dimensionaledibles.util.TeleporterHandler.updateDimPos;
 
 public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvider {
 
+    public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
     public BlockIslandCake() {
         super();
@@ -96,7 +96,7 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
                         teleportPlayer(worldIn, playerIn, island.getTeleportLocation());
                     }
                 }
-        }
+            }
             // has to return true for both server and client
             return true;
         }
@@ -231,4 +231,32 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
         return super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 
+    public IBlockState withRotation(IBlockState state, Rotation rot) {
+        return state.getBlock() != this ? state : state.withProperty(FACING, rot.rotate((EnumFacing) state.getValue(FACING)));
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return super.getStateFromMeta(meta).withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3));
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        int i = super.getMetaFromState(state);
+        i = i | ((EnumFacing) state.getValue(FACING)).getHorizontalIndex() << 2;
+
+        return i;
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, new IProperty[]{BITES, FACING});
+    }
+
+    @Override
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+        return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, hand)
+                .withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+
+    }
 }
