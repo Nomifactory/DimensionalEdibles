@@ -227,7 +227,6 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
 
         }
 
-
         return super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 
@@ -237,7 +236,7 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return super.getStateFromMeta(meta).withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3));
+        return super.getStateFromMeta(meta % 6).withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 3));
     }
 
     @Override
