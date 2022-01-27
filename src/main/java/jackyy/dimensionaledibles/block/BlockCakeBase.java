@@ -330,7 +330,6 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
                 return true;
             }
         }
-
         return false;
     }
 
