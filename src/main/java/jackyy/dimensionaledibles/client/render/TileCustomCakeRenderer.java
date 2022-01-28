@@ -16,7 +16,7 @@ public class TileCustomCakeRenderer extends TileEntitySpecialRenderer<TileDimens
 
     @Override
     public void render(TileDimensionCake cake, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-        RendererUtils.RenderText(cake, x, y, z);
+        RendererUtils.RenderText(cake.getCakeName(), x, y, z, 553648127);
     }
 
 }
