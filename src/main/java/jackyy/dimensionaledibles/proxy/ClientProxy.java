@@ -30,7 +30,7 @@ public class ClientProxy extends CommonProxy {
     public void init(FMLInitializationEvent event) {
         super.init(event);
         ClientRegistry.bindTileEntitySpecialRenderer(TileDimensionCake.class, TileCustomCakeRenderer.INSTANCE);
-        ClientRegistry.bindTileEntitySpecialRenderer(TileIslandCake.class, new TileIslandCakeRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileIslandCake.class, TileIslandCakeRenderer.INSTANCE);
     }
 
     public void postInit(FMLPostInitializationEvent event) {
