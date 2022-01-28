@@ -138,7 +138,6 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
         TileIslandCake tic = (TileIslandCake) worldIn.getTileEntity(pos);
 
         if (DimensionalEdibles.isFTBLibsRunning) {
-
             short teamUUID = FTBLibAPI.getTeamID(uuid);
             // check if player is in a team
             if (teamUUID != 0 && !tic.isPersonalCake()) {

@@ -48,43 +48,12 @@ public class TileIslandCakeRenderer extends TileEntitySpecialRenderer<TileIsland
 
     @Override
     public void render(TileIslandCake cake, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-
         if (cake.isPersonalCake()) {
             RendererUtils.RenderText(cake.getCakeName(), x, y, z, 0x201FB7DC);
             RendererUtils.RenderText("Personal", x, y - 0.24F, z, 0x201FB7DC, 0.015F);
         } else {
             RendererUtils.RenderText(cake.getCakeName(), x, y, z, 0x20FFFFFF);
         }
-
-        /*
-        double SCALE = 0.0625;
-        double DOWNSCALE = 0.65;
-        double OFFSET = (1 - DOWNSCALE) / 2;
-        */
-//        ResourceLocation resourceLocation = getSkinForPlayer(cake.owner);
-//
-//        GlStateManager.pushMatrix();
-//
-//        Minecraft.getMinecraft().renderEngine.bindTexture(resourceLocation);
-//
-//        GlStateManager.translate(x + 0.5, y + 0.75F, z + 0.5F);
-//        GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
-//        double SCALE = 0.01725;
-//        GlStateManager.scale(-SCALE, -SCALE, SCALE);
-//        GlStateManager.rotate(Minecraft.getMinecraft().getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
-//        GlStateManager.rotate(-Minecraft.getMinecraft().getRenderManager().playerViewX, 1.0F, 0.0F, 0.0F);
-//
-//
-//        Tessellator tessellator = Tessellator.getInstance();
-//        BufferBuilder buffer = tessellator.getBuffer();
-//        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-//        addFaceToBuffer(buffer);
-//
-//        GlStateManager.enableTexture2D();
-//
-//        tessellator.draw();
-//
-//        GlStateManager.popMatrix();
     }
 
     @Override
