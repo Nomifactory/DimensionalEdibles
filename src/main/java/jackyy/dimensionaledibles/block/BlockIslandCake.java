@@ -52,9 +52,7 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
         if (tile != null) {
 
             if (tile.isPersonalCake()) {
-
                 Item lockingItem = getItemFromResourceString(ModConfig.tweaks.islandCake.personalLockingItem);
-
                 if (lockingItem == null) {
                     DimensionalEdibles.logger.warn("No locking item set, defaulting to minecraft:diamond");
                     lockingItem = Items.DIAMOND;
@@ -76,14 +74,14 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
                                     float hitX,
                                     float hitY,
                                     float hitZ) {
+        if (!(worldIn.getTileEntity(pos) instanceof TileIslandCake))
+            return false;
 
-        if (convertToPersonalCake(worldIn, pos, state, playerIn, hand)) {
+        if (convertToPersonalCake(worldIn, pos, state, playerIn, hand))
             return true;
-        }
 
-        if (addFuelToCake(worldIn, pos, state, playerIn, hand)) {
+        if (addFuelToCake(worldIn, pos, state, playerIn, hand))
             return true;
-        }
 
 
         if (worldIn.provider.getDimension() != this.cakeDimension()) {
@@ -145,22 +143,19 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
     private Island getIsland(World worldIn, EntityPlayer playerIn, BlockPos pos) {
         UUID uuid = playerIn.getUniqueID();
         IslandManager im = IslandManager.forWorld(worldIn);
-        Island island;
-
+        Island island = null;
+        //already done a check for this position
         TileIslandCake tic = (TileIslandCake) worldIn.getTileEntity(pos);
-
-        if (DimensionalEdibles.isFTBLibsRunning) {
+        
+        if (!tic.isPersonalCake() && DimensionalEdibles.isFTBLibsRunning) {
             short teamUUID = FTBLibAPI.getTeamID(uuid);
             // check if player is in a team
-            if (teamUUID != 0 && !tic.isPersonalCake()) {
+            if (teamUUID != 0) {
                 island = im.getIslandForTeam(teamUUID);
-            } else { // fallback to create their own island (accessable with a personal island cake)
-                island = im.getIslandForPlayer(uuid);
             }
-        } else {
-            island = im.getIslandForPlayer(uuid);
         }
-        return island;
+
+        return island != null ? island : im.getIslandForPlayer(uuid);
     }
 
 
@@ -242,5 +237,4 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
 
         return super.getWailaBody(itemStack, currentTip, accessor, config);
     }
-
 }
