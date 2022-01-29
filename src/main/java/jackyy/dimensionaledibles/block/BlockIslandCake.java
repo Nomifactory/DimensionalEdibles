@@ -16,6 +16,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -177,7 +178,7 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
     @Nonnull
     @Override
     protected ItemStack defaultFuel() {
-        return ItemStack.EMPTY;
+        return new ItemStack(Blocks.COBBLESTONE);
     }
 
     @Nullable
