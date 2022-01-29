@@ -7,6 +7,9 @@ import java.util.UUID;
 
 public class TileIslandCake extends TileDimensionCake {
 
+    public boolean isPersonalCake = false;
+    public UUID owner;
+
     public TileIslandCake() {
         super(ModConfig.tweaks.islandCake.islandDimension, "Island");
     }
@@ -18,9 +21,6 @@ public class TileIslandCake extends TileDimensionCake {
     public void setPersonalCake(boolean personalCake) {
         isPersonalCake = personalCake;
     }
-
-    public boolean isPersonalCake = false;
-    public UUID owner;
 
     public UUID getOwner() {
         return owner;
@@ -45,7 +45,8 @@ public class TileIslandCake extends TileDimensionCake {
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-        this.owner = nbt.getUniqueId("owner");
         this.isPersonalCake = nbt.getBoolean("isPersonalCake");
+        if (nbt.hasKey("owner"))
+            this.owner = nbt.getUniqueId("owner");
     }
 }

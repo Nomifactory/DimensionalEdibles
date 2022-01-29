@@ -9,13 +9,10 @@ import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 import static jackyy.dimensionaledibles.DimensionalEdibles.MODID;
-import static jackyy.dimensionaledibles.DimensionalEdibles.logger;
 
 public class IslandManager {
     private static final HashMap<World, IslandManager> MANAGERS = new HashMap<>();
