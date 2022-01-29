@@ -1,18 +1,13 @@
 package jackyy.dimensionaledibles.client.render;
 
-import jackyy.dimensionaledibles.block.tile.TileDimensionCake;
-import jackyy.dimensionaledibles.block.tile.TileIslandCake;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-import java.util.UUID;
 
 public class RendererUtils {
 
