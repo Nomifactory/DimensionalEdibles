@@ -12,11 +12,13 @@ import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -25,6 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -49,13 +52,15 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
         if (tile != null) {
 
             if (tile.isPersonalCake()) {
-                drops.add(
-                        new ItemStack(
-                                Item.REGISTRY.getObject(
-                                        new ResourceLocation(ModConfig.tweaks.islandCake.personalLockingItem)
-                                )
-                        )
-                );
+
+                Item lockingItem = getItemFromResourceString(ModConfig.tweaks.islandCake.personalLockingItem);
+
+                if (lockingItem == null) {
+                    DimensionalEdibles.logger.warn("No locking item set, defaulting to minecraft:diamond");
+                    lockingItem = Items.DIAMOND;
+                }
+
+                drops.add(new ItemStack(lockingItem));
             }
         }
         super.getDrops(drops, world, pos, state, fortune);
@@ -114,7 +119,13 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
         TileIslandCake tic = (TileIslandCake) te;
 
         ItemStack stack = playerIn.getHeldItem(hand);
-        Item lockItem = Item.REGISTRY.getObject(new ResourceLocation(ModConfig.tweaks.islandCake.personalLockingItem));
+        Item lockItem = getItemFromResourceString(ModConfig.tweaks.islandCake.personalLockingItem);
+
+        if (lockItem == null) {
+            DimensionalEdibles.logger.warn("Lock item not found, won't convert to personal cake");
+            return false;
+        }
+
         if (!stack.isEmpty() &&
                 ItemStack.areItemsEqual(stack, new ItemStack(lockItem)) &&
                 !tic.isPersonalCake()) {
@@ -185,6 +196,14 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileIslandCake();
+    }
+
+    public Item getItemFromResourceString(String resource) {
+        if (resource == null || resource.isEmpty()) {
+            return null;
+        }
+
+        return Item.REGISTRY.getObject(new ResourceLocation(resource));
     }
 
     @Override
