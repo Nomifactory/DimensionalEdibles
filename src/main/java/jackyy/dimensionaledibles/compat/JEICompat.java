@@ -12,8 +12,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.DimensionManager;
 
 @JEIPlugin
 public class JEICompat implements IModPlugin {
@@ -48,12 +46,10 @@ public class JEICompat implements IModPlugin {
                         Item.REGISTRY.getObject(new ResourceLocation(ModConfig.tweaks.overworldCake.fuel)).getItemStackDisplayName(
                                 new ItemStack(Item.REGISTRY.getObject(new ResourceLocation(ModConfig.tweaks.overworldCake.fuel))))));
         //Island Cake
-//        registry.addIngredientInfo(new ItemStack(ModBlocks.islandCake), VanillaTypes.ITEM,
-//                I18n.format(DimensionalEdibles.MODID + ".island_cake.jeidesc",
-//                        Item.REGISTRY.getObject(new ResourceLocation(ModConfig.tweaks.islandCake.fuel)).getItemStackDisplayName(
-//                                new ItemStack(Item.REGISTRY.getObject(new ResourceLocation(ModConfig.tweaks.islandCake.fuel))))));
-
-
+        registry.addIngredientInfo(new ItemStack(ModBlocks.islandCake), VanillaTypes.ITEM,
+                I18n.format(DimensionalEdibles.MODID + ".island_cake.jeidesc",
+                        Item.REGISTRY.getObject(new ResourceLocation(ModConfig.tweaks.islandCake.fuel)).getItemStackDisplayName(
+                                new ItemStack(Item.REGISTRY.getObject(new ResourceLocation(ModConfig.tweaks.islandCake.fuel))))));
         //Ender Apple
         registry.addIngredientInfo(new ItemStack(ModItems.enderApple), VanillaTypes.ITEM,
                 DimensionalEdibles.MODID + ".ender_apple.jeidesc");
