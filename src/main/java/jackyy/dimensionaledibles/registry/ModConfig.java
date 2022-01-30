@@ -51,10 +51,8 @@ public class ModConfig {
         public boolean overworldCake = true;
         @Config.Comment("Set to true to enable custom Cakes.")
         public boolean customCake = true;
-
         @Config.Comment("Set to true to enable Island Cakes.")
         public boolean islandCake = false;
-
         @Config.Comment("Set to true to enable Ender Apple.")
         public boolean enderApple = true;
         @Config.Comment("Set to true to enable Nether Apple.")
@@ -237,6 +235,7 @@ public class ModConfig {
             @Config.Comment("The dimension islands will be created in (dimension has to already exist)")
             public Integer islandDimension = -2;
 
+            // boilerplate
             public String fuel(int dim) { return fuel; }
             public boolean preFueled() { return preFueled; }
             public boolean consumesFuel() { return consumesFuel; }

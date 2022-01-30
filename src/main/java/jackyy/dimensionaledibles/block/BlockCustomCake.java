@@ -29,13 +29,11 @@ import static net.minecraftforge.common.DimensionManager.isDimensionRegistered;
 
 public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvider {
 
-    /**
-     * Dimension of the last-clicked cake.
-     */
+    /** Dimension of the last-clicked cake. */
     private int cakeDimension;
 
     private static class CustomCake {
-        public ModConfig.CustomCoords customCoords = new ModConfig.CustomCoords(0, 0, 0);
+        public ModConfig.CustomCoords customCoords = new ModConfig.CustomCoords(0,0,0);
         private String cakeFuel = null;
         private final int cakeDimension;
 
@@ -46,7 +44,7 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
         @Override
         public String toString() {
             return String.format("CustomCake[dim: %d, fuel: %s, coords: %s]",
-                    cakeDimension, cakeFuel, customCoords);
+                                 cakeDimension, cakeFuel, customCoords);
         }
     }
 
@@ -72,8 +70,8 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
         int dim = getDimension(world, pos);
         if (!isDimensionRegistered(dim)) {
             Message message = new FormattedMessage(
-                    "Requested dimension: \"{}\" does not exist. Please verify your configs.",
-                    dim);
+                "Requested dimension: \"{}\" does not exist. Please verify your configs.",
+                dim);
             if (!world.isRemote)
                 logger.error(message);
             else
@@ -95,20 +93,20 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
     }
 
     /**
-     * DO NOT CALL THIS METHOD OUTSIDE OF PREINIT AND CONFIG CHANGE EVENT HANDLERS.
-     * This should be private but Forge forced my hand.
+     *  DO NOT CALL THIS METHOD OUTSIDE OF PREINIT AND CONFIG CHANGE EVENT HANDLERS.
+     *  This should be private but Forge forced my hand.
      */
     public static void rebuildCache() {
-        Cache<Integer, CustomCake> newCache = new Cache<>();
+        Cache<Integer,CustomCake> newCache = new Cache<>();
 
         NonNullList<ItemStack> subBlocks = NonNullList.create();
         new BlockCustomCake().getSubBlocks(CreativeTabs.BUILDING_BLOCKS, subBlocks);
-        for (ItemStack stack : subBlocks) {
+        for(ItemStack stack : subBlocks) {
             int dimID = ItemBlockCustomCake.getDimID(stack);
             newCache.putIfAbsent(dimID, new CustomCake(dimID));
         }
 
-        for (String s : ModConfig.tweaks.customEdible.customCoords) {
+        for(String s : ModConfig.tweaks.customEdible.customCoords) {
             try {
                 String[] parts = s.split(",");
                 if (parts.length < 4) {
@@ -116,7 +114,7 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
                     continue;
                 }
                 int dim = Integer.parseInt(parts[0].trim());
-                if (!newCache.containsKey(dim)) {
+                if(!newCache.containsKey(dim)) {
                     logger.error("Unrecognized dimension: \"{}\"", dim);
                     return;
                 }
@@ -127,13 +125,13 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
                 cc.y = Integer.parseInt(parts[2].trim());
                 cc.z = Integer.parseInt(parts[3].trim());
 
-            } catch (NumberFormatException e) {
+            } catch(NumberFormatException e) {
                 logger.error("\"{}\" is not a valid line input! The dimension ID needs to be a number!", s, e);
                 return;
             }
         }
 
-        for (String s : ModConfig.tweaks.customEdible.customCake.fuel) {
+        for(String s : ModConfig.tweaks.customEdible.customCake.fuel) {
             try {
                 String[] parts = s.split(",");
                 if (parts.length < 2) {
@@ -144,7 +142,7 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
                 CustomCake cake = newCache.get(dim);
 
                 cake.cakeFuel = parts[1].trim();
-            } catch (NumberFormatException e) {
+            } catch(NumberFormatException e) {
                 logger.error("\"{}\" is not a valid line input! The dimension ID needs to be a number!", s, e);
                 return;
             }
@@ -158,7 +156,7 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
                              NonNullList<ItemStack> list) {
         if (registerItem()) {
             ItemStack stack;
-            for (String s : ModConfig.tweaks.customEdible.dimensions) {
+            for(String s : ModConfig.tweaks.customEdible.dimensions) {
                 try {
                     String[] parts = s.split(",");
                     if (parts.length < 2) {
@@ -178,7 +176,7 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
                     nbt.setString("cakeName", parts[1].trim());
                     list.add(stack);
 
-                } catch (NumberFormatException e) {
+                } catch(NumberFormatException e) {
                     logger.error("\"{}\" is not a valid line input! The dimension ID needs to be a number!", s, e);
                 }
             }
@@ -211,36 +209,23 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
         }
 
         @Override
-        public boolean consumesFuel() {
-            return ModConfig.tweaks.customEdible.customCake.consumeFuel;
-        }
-
+        public boolean consumesFuel() { return ModConfig.tweaks.customEdible.customCake.consumeFuel; }
         @Override
-        public boolean preFueled() {
-            return ModConfig.tweaks.customEdible.customCake.preFueled;
-        }
+        public boolean preFueled() { return ModConfig.tweaks.customEdible.customCake.preFueled; }
     };
 
     @Override
-    protected ModConfig.CakeConfig config() {
-        return conf;
-    }
+    protected ModConfig.CakeConfig config() { return conf; }
 
     @Override
-    public boolean registerItem() {
-        return ModConfig.general.customCake;
-    }
+    public boolean registerItem() { return ModConfig.general.customCake; }
 
     @Override
-    public int cakeDimension() {
-        return cakeDimension;
-    }
+    public int cakeDimension() { return cakeDimension; }
 
     @Override
     @Nonnull
-    public ItemStack defaultFuel() {
-        return ItemStack.EMPTY;
-    }
+    public ItemStack defaultFuel() { return ItemStack.EMPTY; }
 
     /*
         These overrides work around the bug causing log spam in tooltips when

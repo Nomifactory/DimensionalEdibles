@@ -35,9 +35,7 @@ import static jackyy.dimensionaledibles.util.TeleporterHandler.*;
  */
 public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, IWailaInfoProvider {
 
-    /**
-     * The number of bites remaining in a fully-fueled cake.
-     */
+    /** The number of bites remaining in a fully-fueled cake. */
     public static final int MAX_BITES = 6;
 
     /**
@@ -51,15 +49,15 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
      * Each entry in the array corresponds to a specific value of the BITES property.
      */
     public static final AxisAlignedBB[] CAKE_AABB =
-            new AxisAlignedBB[]{
-                    new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D),
-                    new AxisAlignedBB(0.1875D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D),
-                    new AxisAlignedBB(0.3125D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D),
-                    new AxisAlignedBB(0.4375D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D),
-                    new AxisAlignedBB(0.5625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D),
-                    new AxisAlignedBB(0.6875D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D),
-                    new AxisAlignedBB(0.8125D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D)
-            };
+        new AxisAlignedBB[]{
+            new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D),
+            new AxisAlignedBB(0.1875D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D),
+            new AxisAlignedBB(0.3125D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D),
+            new AxisAlignedBB(0.4375D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D),
+            new AxisAlignedBB(0.5625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D),
+            new AxisAlignedBB(0.6875D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D),
+            new AxisAlignedBB(0.8125D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D)
+        };
 
     public BlockCakeBase() {
         super(Material.CAKE);
@@ -70,24 +68,16 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
         setCreativeTab(DimensionalEdibles.TAB);
     }
 
-    /**
-     * Cake config holder object
-     */
+    /** Cake config holder object */
     abstract protected ModConfig.CakeConfig config();
 
-    /**
-     * Target dimension for this cake.
-     */
+    /** Target dimension for this cake. */
     abstract protected int cakeDimension();
 
-    /**
-     * Whether this item should be registered.
-     */
+    /** Whether this item should be registered. */
     abstract protected boolean registerItem();
 
-    /**
-     * The default fuel for this cake type, in the event of a configuration parse error.
-     */
+    /** The default fuel for this cake type, in the event of a configuration parse error. */
     @Nonnull
     abstract protected ItemStack defaultFuel();
 
@@ -153,8 +143,8 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
 
         ItemStack stack = playerIn.getHeldItem(hand);
         if (!stack.isEmpty() &&
-                ItemStack.areItemsEqual(stack, getFuelItemStack(this.cakeDimension())) &&
-                fuelUntilFull != 0) {
+            ItemStack.areItemsEqual(stack, getFuelItemStack(this.cakeDimension())) &&
+            fuelUntilFull != 0) {
             if (meta >= 0) {
                 worldIn.setBlockState(cakePos, state.withProperty(BITES, meta), 2);
                 if (!playerIn.capabilities.isCreativeMode)
@@ -248,12 +238,12 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
 
         if (world.getBlockState(data.getPos()).getBlock() instanceof BlockCakeBase) {
             probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
-                    .item(new ItemStack(Items.CAKE))
-                    .text(TextFormatting.GREEN + "Bites: ")
-                    .progress(MAX_BITES - blockState.getValue(BITES), MAX_BITES);
+                     .item(new ItemStack(Items.CAKE))
+                     .text(TextFormatting.GREEN + "Bites: ")
+                     .progress(MAX_BITES - blockState.getValue(BITES), MAX_BITES);
             probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
-                    .item(fuelStack.isEmpty() ? new ItemStack(Blocks.BARRIER) : fuelStack)
-                    .text(TextFormatting.GREEN + "Refill: " + fuel);
+                     .item(fuelStack.isEmpty() ? new ItemStack(Blocks.BARRIER) : fuelStack)
+                     .text(TextFormatting.GREEN + "Refill: " + fuel);
         }
     }
 
@@ -269,7 +259,7 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
 
         if (accessor.getBlockState().getBlock() instanceof BlockCakeBase) {
             currentTip.add(TextFormatting.GRAY + "Bites: " +
-                    (MAX_BITES - accessor.getBlockState().getValue(BITES)) + " / " + MAX_BITES);
+                           (MAX_BITES - accessor.getBlockState().getValue(BITES)) + " / " + MAX_BITES);
             currentTip.add(TextFormatting.GRAY + "Refill: " + fuel);
         }
         return currentTip;
@@ -315,9 +305,7 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
     }
 
     /**
-     * The player eats the cake
-     *
-     * @return true if a bite was available, false if not
+     * The player eats the cake, then teleports.
      */
     protected boolean consumeCake(World world,
                                   BlockPos pos,
@@ -337,7 +325,7 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
      * Get the Cake Fuel as an ItemStack to maintain NBT data and Metadata.
      *
      * @return The Fuel as an ItemStack if the Config entry is well-formed,
-     * {@link #defaultFuel} otherwise.
+     *         {@link #defaultFuel} otherwise.
      */
     private ItemStack getFuelItemStack(int dim) {
         String fuel = config().fuel(dim);

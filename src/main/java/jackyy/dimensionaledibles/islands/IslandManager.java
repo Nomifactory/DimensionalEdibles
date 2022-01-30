@@ -31,9 +31,7 @@ public class IslandManager {
         return manager;
     }
 
-    /**
-     * Returns an island for a player by id, creating one if the player doesn't already have an island
-     */
+    /** Returns an island for a player by id, creating one if the player doesn't already have an island */
     public Island getIslandForPlayer(UUID id) {
         Island island = data.getByOwningPlayer(id);
         if (island == null) {
@@ -42,9 +40,7 @@ public class IslandManager {
         return island;
     }
 
-    /**
-     * Returns an island for a team by id, creating one if the team doesn't already have an island
-     */
+    /** Returns an island for a team by id, creating one if the team doesn't already have an island */
     public Island getIslandForTeam(short id) {
         Island island = data.getByOwningTeam(id);
         if (island == null) {
