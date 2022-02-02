@@ -120,20 +120,22 @@ public class TeleporterHandler {
     public static BlockPos getDimPos(EntityPlayerMP player, int dimension, BlockPos currentPos) {
         NBTTagCompound dimensionCache = getModNBTData(player);
         NBTTagCompound dimPos = (NBTTagCompound) dimensionCache.getTag("" + dimension);
-        BlockPos position;
         if (dimPos == null) {
             dimPos = new NBTTagCompound();
             dimensionCache.setTag("" + dimension, dimPos);
+        }
+        BlockPos position = new BlockPos(dimPos.getInteger("x"), dimPos.getInteger("y"), dimPos.getInteger("z"));
 
+        // Could compare to BlockPos.ORIGIN, but this may catch other issues in dimension caching.
+        // If there's ever a problem with this (like if some mod decides to add negative Y values),
+        // we should update this to ``` if (position.equals(BlockPos.ORIGIN)) ```
+        if (position.getY() <= 0) {
             WorldServer newDimworld = player.server.getPlayerList().getServerInstance().getWorld(dimension);
-
             if (dimension == 1) {
                 position = newDimworld.getSpawnCoordinate();
             } else {
                 position = getValidYSpawnPos(newDimworld, currentPos);
             }
-        } else {
-            position = new BlockPos(dimPos.getInteger("x"), dimPos.getInteger("y"), dimPos.getInteger("z"));
         }
         return position;
     }
