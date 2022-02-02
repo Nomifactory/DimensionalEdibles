@@ -1,5 +1,6 @@
 package jackyy.dimensionaledibles.islands;
 
+import jackyy.dimensionaledibles.DimensionalEdibles;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -77,12 +78,12 @@ public class IslandManager {
 
         @Nullable
         public Island getByOwningPlayer(UUID id) {
-            return islands.values().stream().filter(i -> i.getOwningPlayer().equals(id)).findFirst().orElse(null);
+            return islands.values().stream().filter(i -> i.getOwningPlayer() != null).filter(i -> i.getOwningPlayer().equals(id)).findFirst().orElse(null);
         }
 
         @Nullable
         public Island getByOwningTeam(short id) {
-            return islands.values().stream().filter(i -> i.getOwningTeam() == id).findFirst().orElse(null);
+            return islands.values().stream().filter(i -> i.getOwningTeam() != 0).filter(i -> i.getOwningTeam() == id).findFirst().orElse(null);
         }
 
         public Island createPlayerOwnedIsland(UUID id) {
