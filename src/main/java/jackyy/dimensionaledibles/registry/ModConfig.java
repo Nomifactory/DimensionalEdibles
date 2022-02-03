@@ -52,6 +52,7 @@ public class ModConfig {
         @Config.Comment("Set to true to enable custom Cakes.")
         public boolean customCake = true;
         @Config.Comment("Set to true to enable Island Cakes.")
+        @Config.RequiresMcRestart
         public boolean islandCake = false;
         @Config.Comment("Set to true to enable Ender Apple.")
         public boolean enderApple = true;
@@ -219,7 +220,7 @@ public class ModConfig {
             public boolean consumesFuel = true;
 
             @Config.Comment("The Y-level that the Island Cake will teleport to")
-            @Config.RangeInt(min = 1, max = 256)
+            @Config.RangeInt(min = 1, max = 255)
             public int yLevel = 80;
 
             @Config.Comment("The gap between two islands in regions")
