@@ -1,5 +1,6 @@
 package jackyy.dimensionaledibles.islands;
 
+import jackyy.dimensionaledibles.DimensionalEdibles;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
