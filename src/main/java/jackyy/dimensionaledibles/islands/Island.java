@@ -56,7 +56,9 @@ public class Island implements INBTSerializable<NBTTagCompound> {
             nbt.setUniqueId("owningPlayer", owningPlayer);
         }
 
-        nbt.setShort("owningTeam", owningTeam);
+        if (owningTeam != 0){
+            nbt.setShort("owningTeam", owningTeam);
+        }
         return nbt;
     }
 
@@ -65,8 +67,13 @@ public class Island implements INBTSerializable<NBTTagCompound> {
         uuid = nbt.getUniqueId("uuid");
         index = nbt.getInteger("index");
         teleportLocation = BlockPos.fromLong(nbt.getLong("teleportLocation"));
-        if (nbt.hasKey("owningPlayer"))
+
+        if (nbt.hasKey("owningPlayer")) {
             owningPlayer = nbt.getUniqueId("owningPlayer");
-        owningTeam = nbt.getShort("owningTeam");
+        }
+
+        if (nbt.hasKey("owningTeam")) {
+            owningTeam = nbt.getShort("owningTeam");
+        }
     }
 }
