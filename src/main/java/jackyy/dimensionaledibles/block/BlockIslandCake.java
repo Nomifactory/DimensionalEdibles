@@ -45,24 +45,6 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
     }
 
     @Override
-    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        TileIslandCake tile = (TileIslandCake) world.getTileEntity(pos);
-        if (tile != null) {
-
-            if (tile.isPersonalCake()) {
-                Item lockingItem = getItemFromResourceString(ModConfig.tweaks.islandCake.personalLockingItem);
-                if (lockingItem == null) {
-                    DimensionalEdibles.logger.warn("No locking item set, defaulting to minecraft:diamond");
-                    lockingItem = Items.DIAMOND;
-                }
-
-                drops.add(new ItemStack(lockingItem));
-            }
-        }
-        super.getDrops(drops, world, pos, state, fortune);
-    }
-
-    @Override
     public boolean onBlockActivated(World worldIn,
                                     BlockPos pos,
                                     IBlockState state,
