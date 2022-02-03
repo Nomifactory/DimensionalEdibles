@@ -17,9 +17,11 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
@@ -32,8 +34,19 @@ public class TeleporterHandler {
     }
 
     public static void teleport(EntityPlayerMP player, int dim, double x, double y, double z, PlayerList playerList) {
+        if (!DimensionManager.isDimensionRegistered(dim)){
+            player.sendMessage(new TextComponentString("Target dimension was not found, canceling teleport"));
+            DimensionalEdibles.logger.error("Dimension {} was not found, canceling teleport for player [{}:{}]",
+                    dim,
+                    player.getName(),
+                    player.getUniqueID()
+            );
+            return;
+        }
+
         if (!ForgeHooks.onTravelToDimension(player, dim))
             return;
+
         int oldDim = player.dimension;
         WorldServer worldServer = playerList.getServerInstance().getWorld(player.dimension);
         player.dimension = dim;
