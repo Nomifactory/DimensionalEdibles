@@ -53,7 +53,7 @@ public class Island implements INBTSerializable<NBTTagCompound> {
         nbt.setLong("teleportLocation", teleportLocation.toLong());
 
         if (owningPlayer != null) { // fix NPE on save
-            nbt.setUniqueId("owningPlayer", owningPlayer);
+            nbt.setString("owningPlayer", owningPlayer.toString());
         }
 
         if (owningTeam != 0){
@@ -68,8 +68,8 @@ public class Island implements INBTSerializable<NBTTagCompound> {
         index = nbt.getInteger("index");
         teleportLocation = BlockPos.fromLong(nbt.getLong("teleportLocation"));
 
-        if (nbt.hasKey("owningPlayer")) {
-            owningPlayer = nbt.getUniqueId("owningPlayer");
+        if (nbt.hasKey("owningPlayer")){
+            owningPlayer = UUID.fromString(nbt.getString("owningPlayer"));
         }
 
         if (nbt.hasKey("owningTeam")) {
