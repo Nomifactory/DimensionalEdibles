@@ -63,23 +63,19 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
         if (addFuelToCake(worldIn, pos, state, playerIn, hand))
             return true;
 
-
-        if (worldIn.provider.getDimension() != this.cakeDimension()) {
-            if (!worldIn.isRemote) {
-                Island island = getIsland(worldIn, playerIn, pos);
-                if (playerIn.capabilities.isCreativeMode || !config().consumesFuel())
+        if (!worldIn.isRemote) {
+            Island island = getIsland(worldIn, playerIn, pos);
+            if (playerIn.capabilities.isCreativeMode || !config().consumesFuel())
+                teleportPlayer(worldIn, playerIn, island.getTeleportLocation());
+            else {
+                if (consumeCake(worldIn, pos, playerIn)) {
                     teleportPlayer(worldIn, playerIn, island.getTeleportLocation());
-                else {
-                    if (consumeCake(worldIn, pos, playerIn)) {
-                        teleportPlayer(worldIn, playerIn, island.getTeleportLocation());
-                    }
                 }
             }
-            // has to return true for both server and client
-            return true;
         }
 
-        return false;
+        // has to return true for both server and client
+        return true;
     }
 
     private boolean convertToPersonalCake(World worldIn,
