@@ -220,8 +220,8 @@ public abstract class BlockCakeBase extends Block implements ITOPInfoProvider, I
         ItemStack fuelStack = getFuelItemStack(this.cakeDimension());
         //Only the custom cake falls back to a default empty ItemStack, so if the ItemStack is empty, the cake is a
         //custom cake with a bad fuel entry
-        String fuel = fuelStack.isEmpty() ? I18n.format("tooltip.dimensionaledibles.custom_cake.bad_config") :
-                I18n.format(fuelStack.getTranslationKey() + ".name");
+        String fuel = fuelStack.isEmpty() ? "{*tooltip.dimensionaledibles.custom_cake.bad_config*}" :
+                String.format("{*%s.name*}", fuelStack.getTranslationKey());
 
         if (world.getBlockState(data.getPos()).getBlock() instanceof BlockCakeBase) {
             probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
