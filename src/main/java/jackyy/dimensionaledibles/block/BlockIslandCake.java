@@ -122,8 +122,11 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
         Island island = null;
         //already done a check for this position
         TileIslandCake tic = (TileIslandCake) worldIn.getTileEntity(pos);
-        
-        if (!tic.isPersonalCake() && DimensionalEdibles.isFTBLibsRunning) {
+
+        EntityPlayerMP playerMP = (EntityPlayerMP) playerIn;
+        if ( !playerMP.server.isSinglePlayer()
+                && !tic.isPersonalCake()
+                && DimensionalEdibles.isFTBLibsRunning) {
             short teamUUID = FTBLibAPI.getTeamID(uuid);
             // check if player is in a team
             if (teamUUID != 0) {
