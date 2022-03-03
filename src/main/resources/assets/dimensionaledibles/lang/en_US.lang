@@ -12,6 +12,7 @@ tile.dimensionaledibles.end_cake.name=End Cake
 tile.dimensionaledibles.nether_cake.name=Nether Cake
 tile.dimensionaledibles.overworld_cake.name=Overworld Cake
 tile.dimensionaledibles.custom_cake.name=Custom Cake
+tile.dimensionaledibles.island_cake.name=Island Cake
 
 #Tooltip
 tooltip.dimensionaledibles.cake=§3§oRefill using %s.
@@ -21,6 +22,7 @@ tooltip.dimensionaledibles.custom_cake.bad_config=§4Could not get Custom Cake f
 dimensionaledibles.end_cake.jeidesc=Place the cake down and fill it with %d, then right click on the cake and you'll be teleported to The End. The cake has infinite uses as long as it is fueled.
 dimensionaledibles.nether_cake.jeidesc=Place the cake down and fill it with %d, then right click on the cake and you'll be teleported to the Nether. The cake has infinite uses as long as it is fueled.
 dimensionaledibles.overworld_cake.jeidesc=Place the cake down and fill it with %d, then right click on the cake and you'll be teleported to the Overworld. The cake has infinite uses as long as it is fueled.
+dimensionaledibles.island_cake.jeidesc=Place the cake down and fill it with %d, then right click on the cake and you'll be teleported to an island. The cake has infinite uses as long as it is fueled.
 dimensionaledibles.ender_apple.jeidesc=Eat the apple and you'll be teleported to The End. Single-use only.
 dimensionaledibles.nether_apple.jeidesc=Eat the apple and you'll be teleported to the Nether. Single-use only.
 dimensionaledibles.overworld_apple.jeidesc=Eat the apple and you'll be teleported to the Overworld. Single-use only.

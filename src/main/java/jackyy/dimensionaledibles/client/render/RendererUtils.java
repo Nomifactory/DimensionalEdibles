@@ -1,23 +1,17 @@
-package jackyy.dimensionaledibles.client;
+package jackyy.dimensionaledibles.client.render;
 
-import jackyy.dimensionaledibles.block.tile.TileDimensionCake;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
-public class TileCustomCakeRenderer extends TileEntitySpecialRenderer<TileDimensionCake> {
 
-    public static final TileCustomCakeRenderer INSTANCE = new TileCustomCakeRenderer();
+public class RendererUtils {
 
-    @Override
-    public void render(TileDimensionCake cake, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-        String dimName = cake.getCakeName();
-        float scale = 0.02666667F;
+    public static void RenderText(String text, double x, double y, double z, int color, float scale ) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5, y + 1, z + 0.5F);
         GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
@@ -34,21 +28,25 @@ public class TileCustomCakeRenderer extends TileEntitySpecialRenderer<TileDimens
         GlStateManager.disableTexture2D();
         vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
         FontRenderer fontrenderer = Minecraft.getMinecraft().fontRenderer;
-        int width = fontrenderer.getStringWidth(dimName) / 2;
+        int width = fontrenderer.getStringWidth(text) / 2;
         vertexbuffer.pos(x - width - 1, y - 1, z).color(0F, 0F, 0, 0.25F).endVertex();
         vertexbuffer.pos(x - width - 1, y + 8, z).color(0F, 0F, 0, 0.25F).endVertex();
         vertexbuffer.pos(x + width + 1, y + 8, z).color(0F, 0F, 0, 0.25F).endVertex();
         vertexbuffer.pos(x + width + 1, y - 1, z).color(0F, 0F, 0, 0.25F).endVertex();
         tessellator.draw();
         GlStateManager.enableTexture2D();
-        fontrenderer.drawString(dimName, -fontrenderer.getStringWidth(dimName) / 2, 0, 553648127);
+        fontrenderer.drawString(text, -fontrenderer.getStringWidth(text) / 2, 0, color);
         GlStateManager.enableDepth();
         GlStateManager.depthMask(true);
-        fontrenderer.drawString(dimName, -fontrenderer.getStringWidth(dimName) / 2, 0, -1);
+        fontrenderer.drawString(text, -fontrenderer.getStringWidth(text) / 2, 0, -1);
         GlStateManager.enableLighting();
         GlStateManager.disableBlend();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.popMatrix();
+    }
+
+    public static void RenderText(String text, double x, double y, double z, int color) {
+       RenderText(text, x, y, z, color, 0.02666667F);
     }
 
 }

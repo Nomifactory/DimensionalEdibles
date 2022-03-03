@@ -51,6 +51,9 @@ public class ModConfig {
         public boolean overworldCake = true;
         @Config.Comment("Set to true to enable custom Cakes.")
         public boolean customCake = true;
+        @Config.Comment("Set to true to enable Island Cakes.")
+        @Config.RequiresMcRestart
+        public boolean islandCake = false;
         @Config.Comment("Set to true to enable Ender Apple.")
         public boolean enderApple = true;
         @Config.Comment("Set to true to enable Nether Apple.")
@@ -107,6 +110,8 @@ public class ModConfig {
         public OverworldCake overworldCake = new OverworldCake();
         @Config.Comment("The category for dealing with the Overworld Apple")
         public OverworldApple overworldApple = new OverworldApple();
+        @Config.Comment("The category for dealing with the Island Cake")
+        public IslandCake islandCake = new IslandCake();
         @Config.Comment("The category for defining and modifying a Custom Cake")
         public CustomEdible customEdible = new CustomEdible();
         @Config.Comment("Set to true to disable the activation of vanilla End Portal.")
@@ -201,6 +206,42 @@ public class ModConfig {
             public boolean useCustomCoords = false;
             @Config.Comment("Define the custom spawn coordinates")
             public CustomCoords customCoords = new CustomCoords();
+        }
+
+        public static class IslandCake implements CakeConfig {
+
+            @Config.Comment("Set the fuel used by Island Cake (Don't change this unless you know what you're doing).")
+            public String fuel = "minecraft:cobblestone";
+
+            @Config.Comment("Set to true to make the Island Cake pre-fueled upon placed.")
+            public boolean preFueled = false;
+
+            @Config.Comment("Set to true to make the Island Cake consume fuel.")
+            public boolean consumesFuel = true;
+
+            @Config.Comment("The Y-level that the Island Cake will teleport to")
+            @Config.RangeInt(min = 1, max = 255)
+            public int yLevel = 80;
+
+            @Config.Comment("The gap between two islands in regions")
+            @Config.RangeInt(min = 2, max = 100)
+            public int islandGapRegions = 2;
+
+            @Config.Comment("Allow players to create personal islands when on a FTB Team")
+            public boolean allowPersonalIslands = true;
+
+            @Config.Comment("The item that when used on an island cake turns it into a personal island cake")
+            public String personalLockingItem = "minecraft:diamond";
+
+            @Config.Comment("The dimension islands will be created in (dimension has to already exist)")
+            public Integer islandDimension = -2;
+
+            // boilerplate
+            public String fuel(int dim) { return fuel; }
+            public boolean preFueled() { return preFueled; }
+            public boolean consumesFuel() { return consumesFuel; }
+            public boolean useCustomCoordinates(int dim) { return false; }
+            public CustomCoords customCoords(int dim) { return null; }
         }
 
         public static class CustomEdible {

@@ -45,6 +45,11 @@ public class JEICompat implements IModPlugin {
                 I18n.format(DimensionalEdibles.MODID + ".overworld_cake.jeidesc",
                         Item.REGISTRY.getObject(new ResourceLocation(ModConfig.tweaks.overworldCake.fuel)).getItemStackDisplayName(
                                 new ItemStack(Item.REGISTRY.getObject(new ResourceLocation(ModConfig.tweaks.overworldCake.fuel))))));
+        //Island Cake
+        registry.addIngredientInfo(new ItemStack(ModBlocks.islandCake), VanillaTypes.ITEM,
+                I18n.format(DimensionalEdibles.MODID + ".island_cake.jeidesc",
+                        Item.REGISTRY.getObject(new ResourceLocation(ModConfig.tweaks.islandCake.fuel)).getItemStackDisplayName(
+                                new ItemStack(Item.REGISTRY.getObject(new ResourceLocation(ModConfig.tweaks.islandCake.fuel))))));
         //Ender Apple
         registry.addIngredientInfo(new ItemStack(ModItems.enderApple), VanillaTypes.ITEM,
                 DimensionalEdibles.MODID + ".ender_apple.jeidesc");

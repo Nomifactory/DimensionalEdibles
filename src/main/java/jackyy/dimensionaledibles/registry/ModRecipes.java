@@ -18,6 +18,9 @@ public class ModRecipes {
         if (ModConfig.general.overworldCake)
             GameRegistry.addShapedRecipe(ModBlocks.overworldCake.getRegistryName(), null, new ItemStack(ModBlocks.overworldCake),
                     "SSS", "SCS", "SSS", 'S', "treeSapling", 'C', Items.CAKE);
+        if (ModConfig.general.islandCake)
+            GameRegistry.addShapedRecipe(ModBlocks.islandCake.getRegistryName(), null, new ItemStack(ModBlocks.islandCake),
+                    "SSS", "SCS", "SSS", 'S', "cobblestone", 'C', Items.CAKE);
         if (ModConfig.general.enderApple)
             GameRegistry.addShapedRecipe(ModItems.enderApple.getRegistryName(), null, new ItemStack(ModItems.enderApple),
                     "EEE", "EAE", "EEE", 'E', Items.ENDER_EYE, 'A', new ItemStack(Items.GOLDEN_APPLE, 1, 0));
