@@ -20,6 +20,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.*;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -120,13 +121,15 @@ public class BlockIslandCake extends BlockCakeBase implements ITileEntityProvide
         UUID uuid = playerIn.getUniqueID();
         IslandManager im = IslandManager.forWorld(worldIn);
         Island island = null;
-        //already done a check for this position
-        TileIslandCake tic = (TileIslandCake) worldIn.getTileEntity(pos);
+        // already done a check for this position
+        final TileIslandCake tic = (TileIslandCake) worldIn.getTileEntity(pos);
+        final MinecraftServer server = playerIn.getServer();
 
-        EntityPlayerMP playerMP = (EntityPlayerMP) playerIn;
-        if ( !playerMP.server.isSinglePlayer()
-                && !tic.isPersonalCake()
-                && DimensionalEdibles.isFTBLibsRunning) {
+        if (server != null && tic != null
+            && !server.isSinglePlayer()
+            && !tic.isPersonalCake()
+            && DimensionalEdibles.isFTBLibsRunning)
+        {
             short teamUUID = FTBLibAPI.getTeamID(uuid);
             // check if player is in a team
             if (teamUUID != 0) {
