@@ -1,0 +1,37 @@
+#Creative Tab
+itemGroup.dimensionaledibles=Dimensional Edibles
+
+#Items
+item.dimensionaledibles.ender_apple.name=エンダーりんご
+item.dimensionaledibles.nether_apple.name=ネザーのりんご
+item.dimensionaledibles.overworld_apple.name=オーバーワールドのりんご
+item.dimensionaledibles.custom_apple.name=カスタムりんご
+
+#Blocks
+tile.dimensionaledibles.end_cake.name=ジ・エンドのケーキ
+tile.dimensionaledibles.nether_cake.name=ネザーのケーキ
+tile.dimensionaledibles.overworld_cake.name=オーバーワールドのケーキ
+tile.dimensionaledibles.custom_cake.name=カスタムケーキ
+tile.dimensionaledibles.island_cake.name=浮島のケーキ
+
+#Tooltip
+tooltip.dimensionaledibles.cake=§3§o%sを使って補充できます。
+tooltip.dimensionaledibles.custom_cake.bad_config=§4カスタムケーキの燃料が取得できません!
+
+#JEI Compat
+dimensionaledibles.end_cake.jeidesc=ケーキを設置し%dで満たし、ケーキを右クリックするとジ・エンドに移動する。 ケーキが満たされている限り使い続けることができる。
+dimensionaledibles.nether_cake.jeidesc=ケーキを設置し%dで満たし、ケーキを右クリックするとネザーに移動する。 ケーキが満たされている限り使い続けることができる。
+dimensionaledibles.overworld_cake.jeidesc=ケーキを設置し%dで満たし、ケーキを右クリックするとオーバーワールドに移動する。 ケーキが満たされている限り使い続けることができる。
+dimensionaledibles.island_cake.jeidesc=ケーキを設置し%dで満たし、ケーキを右クリックすると浮島に移動する。 ケーキが満たされている限り使い続けることができる。
+dimensionaledibles.ender_apple.jeidesc=りんごを食べるとジ・エンドに移動する。一回限り。
+dimensionaledibles.nether_apple.jeidesc=りんごを食べるとネザーに移動する。一回限り。
+dimensionaledibles.overworld_apple.jeidesc=りんごを食べるとオーバーワールドに移動する。一回限り。
+
+#Error Messages
+dimensionaledibles.error.end_portal_disabled=§cエンドポータルの活性化は無効化されています！ 代わりにジ・エンドのケーキを使用してください！
+
+#Commands
+#dimensionaledibles.command.usage=Usage: /dimensionalEdibles <invalidate>
+#dimensionaledibles.command.invalidate.usage=/dimensionalEdibles invalidate <player> <dimID>
+#dimensionaledibles.command.invalidate.failed=Dimension not found in stored dimension cache
+#dimensionaledibles.command.invalidate.success=Successfully removed stored spawn location
