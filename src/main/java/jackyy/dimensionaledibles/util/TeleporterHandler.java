@@ -78,7 +78,7 @@ public class TeleporterHandler {
         if (worldServer1.provider.getDimension() != 0) {
             for (int xx = -1; xx <= 1; xx++) {
                 for (int zz = -1; zz <= 1; zz++) {
-                    if (!worldServer1.getBlockState(pos.add(xx, 0, zz)).isFullBlock()) {
+                    if (worldServer1.isAirBlock(pos.add(xx, 0, zz))) {
                         worldServer1.setBlockState(pos.add(xx, 0, zz), Blocks.OBSIDIAN.getDefaultState());
                     }
                 }

@@ -19,6 +19,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.text.*;
 import net.minecraft.world.*;
 import org.apache.logging.log4j.message.*;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.*;
 
@@ -82,6 +83,24 @@ public class BlockCustomCake extends BlockCakeBase implements ITileEntityProvide
         this.cakeDimension = dim;
 
         return super.onBlockActivated(world, pos, state, player, hand, side, hitX, hitY, hitZ);
+    }
+
+    @Override
+    @NotNull
+    public ItemStack getPickBlock(@NotNull IBlockState state, @NotNull RayTraceResult target, World world, @NotNull BlockPos pos, @NotNull EntityPlayer player) {
+        TileEntity tile = world.getTileEntity(pos);
+        ItemStack stack = super.getPickBlock(state, target, world, pos, player);
+
+        if (!(tile instanceof TileDimensionCake cake)) return stack;
+
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null) compound = new NBTTagCompound();
+
+        compound.setInteger("dimID", cake.getDimensionID());
+        compound.setString("cakeName", cake.getCakeName());
+        stack.setTagCompound(compound);
+
+        return stack;
     }
 
     private int getDimension(World world,
