@@ -12,18 +12,16 @@ import org.apache.logging.log4j.*;
 
 @Mod(modid = DimensionalEdibles.MODID,
     name = DimensionalEdibles.MODNAME,
-    version = DimensionalEdibles.VERSION,
+    version = Tags.VERSION,
     acceptedMinecraftVersions = DimensionalEdibles.MCVERSION,
     dependencies = DimensionalEdibles.DEPENDS,
-    certificateFingerprint = "@FINGERPRINT@",
     useMetadata = true)
 @SuppressWarnings("unused")
 public class DimensionalEdibles {
 
-    public static final String VERSION = "GRADLE:VERSION";
     public static final String MCVERSION = "[1.12,1.13)";
     public static final String MODID = "dimensionaledibles";
-    public static final String MODNAME = "Dimensional Edibles";
+    public static final String MODNAME = "Dimensional Edibles: Nomifactory Edition";
     public static final String DEPENDS = "after:waila;after:theoneprobe;after:jei@[4.12.0.0,);";
     public static final CreativeTabs TAB = new CreativeTabs(MODID) {
         @Override
@@ -52,13 +50,6 @@ public class DimensionalEdibles {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
-    }
-
-    @Mod.EventHandler
-    public void onFingerprintViolation(FMLFingerprintViolationEvent event) {
-        logger.warn(
-            "Invalid fingerprint detected! The file \"{}\" may have been modified. This will NOT be supported by the mod author!",
-            event.getSource().getName());
     }
 
     @Mod.EventHandler

@@ -85,7 +85,7 @@ public class TeleporterHandler {
             }
         }
         for (int yy = 1; yy <= 3; yy++) {
-            if (worldServer1.getBlockState(pos.add(0, yy, 0)).isFullBlock()) {
+            if (!worldServer1.isAirBlock(pos.add(0, yy, 0))) {
                 worldServer1.setBlockToAir(pos.add(0, yy, 0));
             }
         }
